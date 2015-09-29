@@ -3,17 +3,20 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Stephen&#39;s Blog</title>
+  <title>A Python-based Client for Rational Team Concert (RTC) | Stephen&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Stephen's Blog">
-<meta property="og:url" content="http://dixudx.github.io/index.html">
+  <meta name="description" content="OvertureIBM® Rational Team Concert™, is built on the Jazz platform, allowing application development teams to use one tool to plan across teams, code, run standups, plan sprints, and track work. For m">
+<meta property="og:type" content="article">
+<meta property="og:title" content="A Python-based Client for Rational Team Concert (RTC)">
+<meta property="og:url" content="http://dixudx.github.io/2015/09/28/A-Python-based-Client-for-Rational-Team-Concert-RTC/index.html">
 <meta property="og:site_name" content="Stephen's Blog">
-<meta property="og:description">
+<meta property="og:description" content="OvertureIBM® Rational Team Concert™, is built on the Jazz platform, allowing application development teams to use one tool to plan across teams, code, run standups, plan sprints, and track work. For m">
+<meta property="og:image" content="http://dixudx.github.io/images/IBM_Rational_Team_Concert.png">
+<meta property="og:image" content="http://dixudx.github.io/images/rtc_web.gif">
+<meta property="og:updated_time" content="2015-09-29T07:06:31.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Stephen's Blog">
-<meta name="twitter:description">
+<meta name="twitter:title" content="A Python-based Client for Rational Team Concert (RTC)">
+<meta name="twitter:description" content="OvertureIBM® Rational Team Concert™, is built on the Jazz platform, allowing application development teams to use one tool to plan across teams, code, run standups, plan sprints, and track work. For m">
   
   
     <link rel="icon" href="/favicon.png">
@@ -87,91 +90,89 @@
           <section id="main">
             <div class="main-body-header">
 
-              <h1 class="header"><em class="page-title-link" data-url="home">Home</em></h1>
+              <h1 class="header"><a class="page-title-link" href="/categories/Projects/">Projects</a></h1>
             </div>
             <div class="main-body-content">
               
-  
-  
-    
-    
+  <article id="post-A-Python-based-Client-for-Rational-Team-Concert-RTC" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+      <!--  -->
       
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2015" class="archive-year"><i class="icon fa fa-calendar-o"></i>2015</a>
-        </div>
-        <div class="archives">
-    
-    
-    
-      <div class="article-row">
-    
-        
-  <article class="article article-summary">
-    <div class="article-summary-inner">
-      
-<a href="/2015/09/28/Dynamically-Show-the-Overall-Progress-of-Running-Jenkins-Flows/" class="thumbnail">
+        <header class="article-header">
+          
   
-    <span class="thumbnail-image thumbnail-none"></span>
+    <h1 class="article-title" itemprop="name">
+      A Python-based Client for Rational Team Concert (RTC)
+    </h1>
   
+
+        </header>
+      
+      <p class="article-byline">
+        <a href="/2015/09/28/A-Python-based-Client-for-Rational-Team-Concert-RTC/" class="article-date">
+  <time datetime="2015-09-28T06:50:51.000Z" itemprop="datePublished">2015-09-28</time>
 </a>
-
-      <div class="article-meta">
-        <p class="category"><a class="article-category-link" href="/categories/Projects/">Projects</a></p>
-        <p class="date"><time datetime="2015-09-28T07:52:24.000Z" itemprop="datePublished">2015-09-28</time></p>
-      </div>
-      <h2 class="article-title">
-        <a href="/2015/09/28/Dynamically-Show-the-Overall-Progress-of-Running-Jenkins-Flows/" class="title">Dynamically Show the Overall Progress of Running Jenkins Flows</a>
-      </h2>
-      <p class="article-excerpt">
-        
-        test
-
       </p>
+      <div class="article-entry" itemprop="articleBody">
+        <h2 id="Overture">Overture</h2><p>IBM® Rational Team Concert™, is built on the Jazz platform, allowing application development teams to use one tool to plan across teams, code, run standups, plan sprints, and track work. For more info, please refer to <a href="http://www.ibm.com/developerworks/downloads/r/rtc/" target="_blank" rel="external">the official website</a>.</p>
+<p><img src="/images/IBM_Rational_Team_Concert.png" alt="IBM Rational Team Concert"></p>
+<p>Currently there are no light-weighted, easy-used clients for <strong>Rational Team Concert</strong> (aka, <strong>RTC</strong>). Indeed there is an official RTC client, which is quite powerful, fully fledged and can be integrated with <strong>Eclipse</strong> as a plugin, but it is a GUI-based client. It is very hard to integrate with or be called by other programs. Also it is neither easy-installed nor light-weighted.</p>
+<p>The most common scenario that I want to use such a client is to open a new <strong>RTC</strong> defect/change request/story when a <strong>Jenkins</strong> pipeline finishes.</p>
+<p><img src="/images/rtc_web.gif" alt="IBM RTC Web"></p>
+<p>I’ve searched all over the Internet, but found nothing. I think such a client should at least has below characteristics:</p>
+<ul>
+<li>easy to be installed;</li>
+<li>light-weighted;</li>
+<li>simple to use;</li>
+<li>a command line tool without GUI;</li>
+<li>at least supports some basic <strong>RTC</strong> usages, such as creating all kinds of <strong>Workitems</strong>, adding comments to the retrieved <strong>Workitems</strong> and etc;</li>
+</ul>
+<p>So I write such a Python-based client to implement these basic <strong>RTC</strong> scenarios.</p>
+<h2 id="A_Python-based_Client:_RTCClient">A Python-based Client: RTCClient</h2><p>This client is named <a href="https://pypi.python.org/pypi/rtcclient" target="_blank" rel="external">rtcclient</a>, which has already been published to <a href="https://pypi.python.org/pypi" target="_blank" rel="external">Pypi</a>. You can install this client using <a href="https://pypi.python.org/pypi/pip" target="_blank" rel="external"><code>pip</code></a>:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ pip install rtcclient</span><br></pre></td></tr></table></figure>
+<p>Actually <a href="https://pypi.python.org/pypi/rtcclient" target="_blank" rel="external">rtcclient</a> is more like a library, which provides some basic classes and methods to interact with RTC server:</p>
+<ul>
+<li>Retrieves objects which contain the detailed information/configuration, including <strong>Project Areas</strong>, <strong>Team Areas</strong>, <strong>Workitems</strong>, Saved Queries, etc;</li>
+<li>Creates/Opens all kinds of <strong>Workitems</strong> through self-customized templates or Copies from some existing <strong>Workitems</strong>;</li>
+<li>Performs some actions on the retrieved <strong>Workitems</strong>;</li>
+<li>Queries <strong>Workitems</strong> using specified filtered rules or directly from your saved queries;</li>
+<li>More features will be implemented in the future versions;</li>
+</ul>
+<p>However <strong>this is not an official-released Python-based RTC client</strong>. There may be some bugs in this client. You can report the bugs using the links in the below section.</p>
+<p>Also you are welcomed to open a new ticket if new features should be incorporated in this client.</p>
+<p>This is an active project that I will keep on updating and maintaining.</p>
+<h3 id="Important_Links">Important Links</h3><ul>
+<li><p><a href="https://github.com/dixudx/rtcclient/issues?q=is%3Aopen+sort%3Acomments-desc" target="_blank" rel="external">Support and Bug-Reports</a></p>
+</li>
+<li><p><a href="https://github.com/dixudx/rtcclient" target="_blank" rel="external">Project Source Code</a></p>
+</li>
+<li><p><a href="https://readthedocs.org/projects/rtcclient/" target="_blank" rel="external">Project Documentation</a></p>
+</li>
+</ul>
+<h3 id="Supported_Python_&amp;_RTC_Versions">Supported Python &amp; RTC Versions</h3><p>RTC Versions:</p>
+<ul>
+<li>5.0.1</li>
+<li>5.0.2</li>
+</ul>
+<p>Python Versions:</p>
+<ul>
+<li>2.6</li>
+<li>2.7</li>
+<li>3.3</li>
+</ul>
+
+      </div>
+      <footer class="article-footer">
+        <a data-url="http://dixudx.github.io/2015/09/28/A-Python-based-Client-for-Rational-Team-Concert-RTC/" data-id="cif50ujkf000788ygdg840vwm" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+        
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/RTC/">RTC</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Rational-Team-Concert/">Rational Team Concert</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/pypi/">pypi</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/rtcclient/">rtcclient</a></li></ul>
+
+      </footer>
     </div>
   </article>
-
-    
-  
-    
-    
-    
-    
-        
-  <article class="article article-summary">
-    <div class="article-summary-inner">
-      
-<a href="/2015/09/28/A-Python-based-Client-for-Rational-Team-Concert-RTC/" class="thumbnail">
-  
-    <span style="background-image:url(/images/IBM_Rational_Team_Concert.png
-)" alt="A Python-based Client for Rational Team Concert (RTC)" class="thumbnail-image"></span>
-  
-</a>
-
-      <div class="article-meta">
-        <p class="category"><a class="article-category-link" href="/categories/Projects/">Projects</a></p>
-        <p class="date"><time datetime="2015-09-28T06:50:51.000Z" itemprop="datePublished">2015-09-28</time></p>
-      </div>
-      <h2 class="article-title">
-        <a href="/2015/09/28/A-Python-based-Client-for-Rational-Team-Concert-RTC/" class="title">A Python-based Client for Rational Team Concert (RTC)</a>
-      </h2>
-      <p class="article-excerpt">
-        
-        OvertureIBM® Rational Team Concert™, is built on the Jazz platform, allowing application development teams to use one tool to plan across teams, code, run standups, plan sprints, and track work. For m
-      </p>
-    </div>
-  </article>
-
-    
-      </div>
-    
   
   
-    </div></section>
-  
-  
-
 
             </div>
           </section>
@@ -189,6 +190,23 @@
       
     </ul>
   </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2015/09/28/Dynamically-Show-the-Overall-Progress-of-Running-Jenkins-Flows/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">newer</strong>
+      <p class="article-nav-title">
+        
+          Dynamically Show the Overall Progress of Running Jenkins Flows
+        
+      </p>
+      <i class="icon fa fa-chevron-right" id="icon-chevron-right"></i>
+    </a>
+  
+  
+</nav>
+
   
   <div class="widgets-container">
     
