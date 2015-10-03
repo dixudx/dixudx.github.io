@@ -5,16 +5,22 @@
   
   <title>Dynamically Show the Overall Progress of Running Jenkins Flows | Stephen&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="test">
+  <meta name="description" content="Prelude
+Everyone knows Jenkins, right? And I think nobody don’t love Jenkins. Maybe it’s not the fastest or the fanciest, but it’s really easy to start to use, even for rookies, due to its short learn">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Dynamically Show the Overall Progress of Running Jenkins Flows">
 <meta property="og:url" content="http://dixudx.github.io/2015/09/28/Dynamically-Show-the-Overall-Progress-of-Running-Jenkins-Flows/index.html">
 <meta property="og:site_name" content="Stephen's Blog">
-<meta property="og:description" content="test">
-<meta property="og:updated_time" content="2015-09-28T08:07:07.000Z">
+<meta property="og:description" content="Prelude
+Everyone knows Jenkins, right? And I think nobody don’t love Jenkins. Maybe it’s not the fastest or the fanciest, but it’s really easy to start to use, even for rookies, due to its short learn">
+<meta property="og:image" content="http://dixudx.github.io/images/jenkins_logo_title.jpg">
+<meta property="og:image" content="http://dixudx.github.io/images/superhero-all.svg">
+<meta property="og:image" content="https://wiki.jenkins-ci.org/download/attachments/66847200/Capture+d%E2%80%99%C3%A9cran+2013-08-08+%C3%A0+18.54.39.png?version=1&modificationDate=1375980909000">
+<meta property="og:updated_time" content="2015-10-03T08:19:08.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Dynamically Show the Overall Progress of Running Jenkins Flows">
-<meta name="twitter:description" content="test">
+<meta name="twitter:description" content="Prelude
+Everyone knows Jenkins, right? And I think nobody don’t love Jenkins. Maybe it’s not the fastest or the fanciest, but it’s really easy to start to use, even for rookies, due to its short learn">
   
   
     <link rel="icon" href="/favicon.png">
@@ -112,14 +118,31 @@
 </a>
       </p>
       <div class="article-entry" itemprop="articleBody">
-        <p>test</p>
+        <h2 id="Prelude">Prelude</h2><p><img src="/images/jenkins_logo_title.jpg" alt=""></p>
+<p>Everyone knows <a href="http://jenkins-ci.org/" target="_blank" rel="external">Jenkins</a>, right? And I think nobody don’t love <a href="http://jenkins-ci.org/" target="_blank" rel="external">Jenkins</a>. Maybe it’s not the fastest or the fanciest, but it’s really easy to start to use, even for rookies, due to its short learning curves. What’s more, it has a great ecosystem of <a href="https://wiki.jenkins-ci.org/display/JENKINS/Plugins" target="_blank" rel="external">plugins and add-ons</a>, which has significantly improved its capability. It is also optimized for easy customization. It can be configured to build codes, create <a href="http://www.docker.com/" target="_blank" rel="external">Docker containers</a>, run tons of tests, push to staging/production and etc. </p>
+<p><a href="http://jenkins-ci.org/" target="_blank" rel="external">Jenkins</a> has become an indispensable tool for <a href="https://en.wikipedia.org/wiki/Continuous_integration" target="_blank" rel="external">Continuous Integration</a> (aka CI) and <a href="https://en.wikipedia.org/wiki/DevOps" target="_blank" rel="external">DevOps</a>. With the help of <a href="http://docs.openstack.org/infra/jenkins-job-builder/" target="_blank" rel="external">Jenkins-Job-Builder</a> (aka JJB), the configurations of Jenkins <a href="https://wiki.jenkins-ci.org/display/JENKINS/Build+Flow+Plugin" target="_blank" rel="external">Jobs/Flows</a> in JSON format can be maintained and updated through <a href="http://www.git-scm.com/" target="_blank" rel="external">Git</a>, which makes it easier to track every change on every Job/Flow.</p>
+<p><span class="image-wrap" style=""><br><img src="/images/superhero-all.svg" style="border: 0px solid black"><br></span></p>
+<p>However there are some issues regarding scaling and performance, which isn’t so unusual. <a href="http://jenkins-ci.org/" target="_blank" rel="external">Jenkins</a> is built as a CI tool, which also needs CI for itself.</p>
+<p>There are other cool solutions such as <a href="https://travis-ci.com/" target="_blank" rel="external">Travis CI</a> and <a href="https://circleci.com/" target="_blank" rel="external">Circle CI</a>, which are both hosted solutions that don’t require any maintenance on our side.</p>
+<h2 id="Reflatus">Reflatus</h2><p>Ordinarily when a build flow is running, we want to track and dynamically show the <code>real-time status</code> of the Jenkins Build Flow. There is already a plugin named <a href="https://wiki.jenkins-ci.org/display/JENKINS/Build+Graph+View+Plugin" target="_blank" rel="external">Build Graph View Plugin</a>, which computes a graph of related builds starting from the first job to the current one, and renders it as a graph.</p>
+<p><img src="https://wiki.jenkins-ci.org/download/attachments/66847200/Capture+d%E2%80%99%C3%A9cran+2013-08-08+%C3%A0+18.54.39.png?version=1&amp;modificationDate=1375980909000" alt=""></p>
+<p>However, that plugin is full-fledged with no standalone daemon, which is hard to customized and integrated into your own dashboard. What’s more, that plugin cannot fully display <strong>the whole flow graph</strong> until all the subjobs/pipelines finish. So it is quite hard for developers, testers and operations engineers to maintain/monitor the <strong>overall progress</strong> of the current flow.</p>
+<p>So I write such a standalone web service named <a href="https://github.com/dixudx/reflatus" target="_blank" rel="external"><strong>reflatus</strong></a>, short for <strong>re</strong>al-time jenkins <strong>fl</strong>ow st<strong>atus</strong>.</p>
+<p>On how to use and configure this tool, please refer to <a href="https://github.com/dixudx/reflatus" target="_blank" rel="external">the project wiki</a>.</p>
+<h3 id="What_it_can_NOT_do">What it can NOT do</h3><p>Reflatus only has a <strong><em>static parser</em></strong>, which can <strong>NOT</strong> parse the dedicated DSL defined by <a href="https://wiki.jenkins-ci.org/display/JENKINS/Build+Flow+Plugin" target="_blank" rel="external">build flow</a>. For the reasons, please refer to FAQ.</p>
+<p>Then an extra yaml file is needed to <strong><em>explicitly</em></strong> define the build workflows (aka build pipelines). More info can be seen in the <code>Configuration</code> section.</p>
+<h2 id="FAQ">FAQ</h2><ul>
+<li><p>Why not adding/using a parser to handle the dedicated DSL defined by <a href="https://wiki.jenkins-ci.org/display/JENKINS/Build+Flow+Plugin" target="_blank" rel="external">build flow</a> ?</p>
+<p>  If so, there is no need to manually add an extra yaml file. Actually it will become quite complex to implement this feature. Regardless of the complicated build flow combinations, the name of a build job/pipeline can be dynamically acquired by <code>triggered parameters</code>, <code>environment variables</code> or an <code>explicit name</code>. This also applies to build job/pipeline parameters. These all adds more workloads and complexity to this tool. It is for this consideration that I discard this feature.</p>
+</li>
+</ul>
 
       </div>
       <footer class="article-footer">
-        <a data-url="http://dixudx.github.io/2015/09/28/Dynamically-Show-the-Overall-Progress-of-Running-Jenkins-Flows/" data-id="cif50ujk8000088yg398r9old" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+        <a data-url="http://dixudx.github.io/2015/09/28/Dynamically-Show-the-Overall-Progress-of-Running-Jenkins-Flows/" data-id="cifatbly90000gzyg2mm43i4k" class="article-share-link"><i class="fa fa-share"></i>Share</a>
         
         
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Jenkins/">Jenkins</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ZeroMQ/">ZeroMQ</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/DevOps/">DevOps</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Jenkins/">Jenkins</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ZeroMQ/">ZeroMQ</a></li></ul>
 
       </footer>
     </div>
@@ -171,7 +194,8 @@
               
 <a href="/2015/09/28/Dynamically-Show-the-Overall-Progress-of-Running-Jenkins-Flows/" class="thumbnail">
   
-    <span class="thumbnail-image thumbnail-none"></span>
+    <span style="background-image:url(/images/jenkins_logo_title.jpg
+)" alt="Dynamically Show the Overall Progress of Running Jenkins Flows" class="thumbnail-image"></span>
   
 </a>
 
@@ -233,7 +257,7 @@
   <div class="widget-wrap widget-list">
     <h3 class="widget-title">tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Jenkins/">Jenkins</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/">Python</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RTC/">RTC</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Rational-Team-Concert/">Rational Team Concert</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ZeroMQ/">ZeroMQ</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pypi/">pypi</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rtcclient/">rtcclient</a><span class="tag-list-count">1</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/DevOps/">DevOps</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Jenkins/">Jenkins</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/">Python</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RTC/">RTC</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ZeroMQ/">ZeroMQ</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pypi/">pypi</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rtcclient/">rtcclient</a><span class="tag-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -243,7 +267,7 @@
   <div class="widget-wrap widget-float">
     <h3 class="widget-title">tag cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Jenkins/" style="font-size: 10px;">Jenkins</a> <a href="/tags/Python/" style="font-size: 10px;">Python</a> <a href="/tags/RTC/" style="font-size: 10px;">RTC</a> <a href="/tags/Rational-Team-Concert/" style="font-size: 10px;">Rational Team Concert</a> <a href="/tags/ZeroMQ/" style="font-size: 10px;">ZeroMQ</a> <a href="/tags/pypi/" style="font-size: 10px;">pypi</a> <a href="/tags/rtcclient/" style="font-size: 10px;">rtcclient</a>
+      <a href="/tags/DevOps/" style="font-size: 10px;">DevOps</a> <a href="/tags/Jenkins/" style="font-size: 10px;">Jenkins</a> <a href="/tags/Python/" style="font-size: 10px;">Python</a> <a href="/tags/RTC/" style="font-size: 10px;">RTC</a> <a href="/tags/ZeroMQ/" style="font-size: 10px;">ZeroMQ</a> <a href="/tags/pypi/" style="font-size: 10px;">pypi</a> <a href="/tags/rtcclient/" style="font-size: 10px;">rtcclient</a>
     </div>
   </div>
 
