@@ -4,7 +4,7 @@
   <subtitle><![CDATA[To me, the past is black and white, but the future is always colorful.]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://dixudx.github.io/"/>
-  <updated>2015-10-03T08:19:08.000Z</updated>
+  <updated>2015-10-10T13:58:40.000Z</updated>
   <id>http://dixudx.github.io/</id>
   
   <author>
@@ -19,7 +19,7 @@
     <link href="http://dixudx.github.io/2015/09/28/Dynamically-Show-the-Overall-Progress-of-Running-Jenkins-Flows/"/>
     <id>http://dixudx.github.io/2015/09/28/Dynamically-Show-the-Overall-Progress-of-Running-Jenkins-Flows/</id>
     <published>2015-09-28T07:52:24.000Z</published>
-    <updated>2015-10-03T08:19:08.000Z</updated>
+    <updated>2015-10-10T13:58:40.000Z</updated>
     <content type="html"><![CDATA[<h2 id="Prelude">Prelude</h2><p><img src="/images/jenkins_logo_title.jpg" alt=""></p>
 <p>Everyone knows <a href="http://jenkins-ci.org/" target="_blank" rel="external">Jenkins</a>, right? And I think nobody don’t love <a href="http://jenkins-ci.org/" target="_blank" rel="external">Jenkins</a>. Maybe it’s not the fastest or the fanciest, but it’s really easy to start to use, even for rookies, due to its short learning curves. What’s more, it has a great ecosystem of <a href="https://wiki.jenkins-ci.org/display/JENKINS/Plugins" target="_blank" rel="external">plugins and add-ons</a>, which has significantly improved its capability. It is also optimized for easy customization. It can be configured to build codes, create <a href="http://www.docker.com/" target="_blank" rel="external">Docker containers</a>, run tons of tests, push to staging/production and etc. </p>
 <p><a href="http://jenkins-ci.org/" target="_blank" rel="external">Jenkins</a> has become an indispensable tool for <a href="https://en.wikipedia.org/wiki/Continuous_integration" target="_blank" rel="external">Continuous Integration</a> (aka CI) and <a href="https://en.wikipedia.org/wiki/DevOps" target="_blank" rel="external">DevOps</a>. With the help of <a href="http://docs.openstack.org/infra/jenkins-job-builder/" target="_blank" rel="external">Jenkins-Job-Builder</a> (aka JJB), the configurations of Jenkins <a href="https://wiki.jenkins-ci.org/display/JENKINS/Build+Flow+Plugin" target="_blank" rel="external">Jobs/Flows</a> in JSON format can be maintained and updated through <a href="http://www.git-scm.com/" target="_blank" rel="external">Git</a>, which makes it easier to track every change on every Job/Flow.</p>
@@ -30,6 +30,7 @@
 <p><img src="https://wiki.jenkins-ci.org/download/attachments/66847200/Capture+d%E2%80%99%C3%A9cran+2013-08-08+%C3%A0+18.54.39.png?version=1&amp;modificationDate=1375980909000" alt=""></p>
 <p>However, that plugin is full-fledged with no standalone daemon, which is hard to customized and integrated into your own dashboard. What’s more, that plugin cannot fully display <strong>the whole flow graph</strong> until all the subjobs/pipelines finish. So it is quite hard for developers, testers and operations engineers to maintain/monitor the <strong>overall progress</strong> of the current flow.</p>
 <p>So I write such a standalone web service named <a href="https://github.com/dixudx/reflatus" target="_blank" rel="external"><strong>reflatus</strong></a>, short for <strong>re</strong>al-time jenkins <strong>fl</strong>ow st<strong>atus</strong>.</p>
+<p><img src="/images/reflatus_demo.png" alt="A Demo Flow"></p>
 <p>On how to use and configure this tool, please refer to <a href="https://github.com/dixudx/reflatus" target="_blank" rel="external">the project wiki</a>.</p>
 <h3 id="What_it_can_NOT_do">What it can NOT do</h3><p>Reflatus only has a <strong><em>static parser</em></strong>, which can <strong>NOT</strong> parse the dedicated DSL defined by <a href="https://wiki.jenkins-ci.org/display/JENKINS/Build+Flow+Plugin" target="_blank" rel="external">build flow</a>. For the reasons, please refer to FAQ.</p>
 <p>Then an extra yaml file is needed to <strong><em>explicitly</em></strong> define the build workflows (aka build pipelines). More info can be seen in the <code>Configuration</code> section.</p>
