@@ -2,6 +2,11 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://dixudx.github.io/2015/10/14/Tutorial-on-ZooKeeper-Part-1-Concepts-and-Terminology/</loc>
+    <lastmod>2015-10-15T15:51:37.000Z</lastmod>
+  </url>
+  
+  <url>
     <loc>http://dixudx.github.io/2015/09/28/Dynamically-Show-the-Overall-Progress-of-Running-Jenkins-Flows/</loc>
     <lastmod>2015-10-10T13:58:40.000Z</lastmod>
   </url>
