@@ -4,7 +4,7 @@
   <subtitle><![CDATA[To me, the past is black and white, but the future is always colorful.]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://dixudx.github.io/"/>
-  <updated>2015-10-15T15:51:37.000Z</updated>
+  <updated>2015-10-10T13:58:40.000Z</updated>
   <id>http://dixudx.github.io/</id>
   
   <author>
@@ -13,84 +13,6 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
-  
-  <entry>
-    <title><![CDATA[Tutorial on ZooKeeper – Part 1: Concepts and Terminology]]></title>
-    <link href="http://dixudx.github.io/2015/10/14/Tutorial-on-ZooKeeper-Part-1-Concepts-and-Terminology/"/>
-    <id>http://dixudx.github.io/2015/10/14/Tutorial-on-ZooKeeper-Part-1-Concepts-and-Terminology/</id>
-    <published>2015-10-14T12:25:21.000Z</published>
-    <updated>2015-10-15T15:51:37.000Z</updated>
-    <content type="html"><![CDATA[<h2 id="Overview">Overview</h2><p>Apache <code>ZooKeeper</code> is a <strong>highly reliable</strong> <em>distributed coordination service</em> for distributed applications to coordinate with each other through a shared hierarchical name space, which is organized similarly to a standard file system path. The name space consists of data registers - called <code>znodes</code>, in <code>ZooKeeper</code> parlance - and these are similar to files and directories which can provide strictly ordered access to the <code>znodes</code>. Unlike a typical file system, which is designed for storage, <code>ZooKeeper</code> data is kept <strong>in-memory</strong>, which means <code>ZooKeeper</code> can achieve <strong>high throughput</strong> and <strong>low latency numbers</strong>. It is especially fast in “read-dominant” workloads. <code>ZooKeeper</code> applications run on thousands of machines, and it performs best where <strong>reads</strong> are more common than <strong>writes</strong>, at ratios of around <strong>10:1</strong>.</p>
-<p><code>ZooKeeper</code> is <strong>ordered</strong>. <code>ZooKeeper</code> stamps each update with a number that reflects the order of all <code>ZooKeeper</code> transactions. Subsequent operations can use the order to implement higher-level abstractions, such as <strong>synchronization primitives</strong>.</p>
-<p>The <strong>performance</strong> aspects of <code>ZooKeeper</code> allow it to be used in <strong>large distributed systems</strong>. The <strong>reliability</strong> aspects prevent it from becoming the single point of failure in <strong>big systems</strong>. Its <strong>strict ordering</strong> allows <strong>sophisticated synchronization primitives</strong> to be implemented at the client.</p>
-<p>From this part on, I will write a series of <a href="/tags/ZooKeeper/">tutorials on ZooKeeper</a>. Some concepts and terminologies are introduced here first.</p>
-<h2 id="What_is_ZooKeeper?">What is ZooKeeper?</h2><p>As the <a href="http://zookeeper.apache.org/" target="_blank" rel="external">Official Site</a> said,</p>
-<blockquote>
-<p>ZooKeeper is a centralized service for <strong>maintaining configuration information</strong>, <strong>naming</strong>, <strong>providing distributed synchronization</strong>, and <strong>providing group services</strong>. All of these kinds of services are used in some form or another by distributed applications. Each time they are implemented there is a lot of work that goes into fixing the bugs and race conditions that are inevitable. Because of the difficulty of implementing these kinds of services, applications initially usually skimp on them ,which make them brittle in the presence of change and difficult to manage. Even when done correctly, different implementations of these services lead to <strong>management complexity</strong> when the applications are deployed.</p>
-</blockquote>
-<p><code>ZooKeeper</code> runs in <strong>Java</strong> and has <em>bindings</em> for both <strong>Java</strong> and <strong>C</strong>.</p>
-<p><code>ZooKeeper</code> is very fast and very simple, which is designed to be a basis for the construction of more <strong>complicated services</strong>, such as synchronization, it provides a set of guarantees. These are:</p>
-<ul>
-<li><strong>Sequential Consistency</strong> - Updates from a client will be applied in the order that they were sent.</li>
-<li><strong>Atomicity</strong> - Updates either succeed or fail. No partial results.</li>
-<li><strong>Single System Image</strong> - A client will see the same view of the service regardless of the server that it connects to.</li>
-<li><strong>Reliability</strong> - Once an update has been applied, it will persist from that time forward until a client overwrites the update.</li>
-<li><strong>Timeliness</strong> - The clients view of the system is guaranteed to be up-to-date within a certain time bound.</li>
-</ul>
-<p>Learn more about <code>ZooKeeper</code> on the <a href="http://zookeeper.apache.org/" target="_blank" rel="external">ZooKeeper Official Site</a>.</p>
-<p><img src="/images/bigdata-zookeeper.png" alt=""></p>
-<h2 id="Some_Concepts_and_Terminology">Some Concepts and Terminology</h2><h3 id="Data_model_and_the_hierarchical_namespace">Data model and the hierarchical namespace</h3><p>Just as mentioned in the <a href="./#Overview">Overview</a>, the name space provided by <code>ZooKeeper</code> is much like that of a standard file system. A name is a sequence of path elements separated by a <strong>slash</strong> (“/“). Every node in ZooKeeper’s name space is identified by a path, which always needs to start with the <strong>root znode</strong> ( “/“ ).</p>
-<p><img src="/images/zknamespace.jpg" alt="ZooKeeper&#39;s Hierarchical Namespace"></p>
-<h3 id="Znode">Znode</h3><p>Unlike standard file systems, each node in a <code>ZooKeeper</code> namespace can have <strong>data</strong> associated with it as well as children. You can create some sub-znodes/children znodes in the <code>znode</code>. It is like having a file-system that allows a file to also be a directory. (<code>ZooKeeper</code> was designed to store <strong>coordination data</strong>: <em>status information</em>, <em>configuration</em>, <em>location information</em>, etc., so the data stored at each node is usually small, in the byte to kilobyte range.) We use the term <code>znode</code> to make it clear that we are talking about <code>ZooKeeper</code> data nodes.</p>
-<blockquote>
-<p>Note: Every <code>znode</code> must has a parent whose path is a prefix of the <code>znode</code> with one less element; the exception to this rule is <strong>root znode</strong> (“/“) which has no parent. Also, exactly like standard file systems, a znode cannot be deleted if it has any children.</p>
-</blockquote>
-<p><code>Znodes</code> maintain a stat structure that includes <strong>version numbers</strong> for data changes, <strong>acl changes</strong>. The stat structure also has <strong>timestamps</strong>. The <strong>version number</strong>, together with the <strong>timestamp</strong> allow <code>ZooKeeper</code> to validate the cache and to coordinate updates. Each time a <code>znode</code>‘s data changes, <strong>the version number increases</strong>. For instance, whenever a client retrieves data, it also receives the version of the data. And when a client performs an update or a delete, it must supply the version of the data of the <code>znode</code> it is changing. If the version it supplies doesn’t match the actual version of the data, the update will fail.</p>
-<p>The command syntax for creating a <code>znode</code> is as follows:</p>
-<figure class="highlight accesslog"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">create -<span class="string">[options]</span> /<span class="string">[znode-name]</span> <span class="string">[znode-data]</span></span><br></pre></td></tr></table></figure>
-<h4 id="Example_1:_Create_a_new_znode_named_“znode_test”_with_data_“znode_test_data”">Example 1: Create a new znode named “znode_test” with data “znode_test_data”</h4><p>The path consists of the <strong>root znode</strong> (“/“) and the name of the <code>znode</code> you want to create. Here you can write <code>/znode_test</code> for its path.</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">[zk: localhost:<span class="number">2181</span>(CONNECTED) <span class="number">0</span>] ls /</span><br><span class="line">[zookeeper]</span><br><span class="line">[zk: localhost:<span class="number">2181</span>(CONNECTED) <span class="number">1</span>] create /znode_test znode_test_data</span><br><span class="line">Created /znode_test</span><br><span class="line">[zk: localhost:<span class="number">2181</span>(CONNECTED) <span class="number">2</span>] get /newznode</span><br><span class="line">znode_test_data</span><br><span class="line">cZxid = <span class="number">0x200000002</span></span><br><span class="line">ctime = Wed Oct <span class="number">14</span> <span class="number">05</span>:<span class="number">19</span>:<span class="number">00</span> EDT <span class="number">2015</span></span><br><span class="line">mZxid = <span class="number">0x200000002</span></span><br><span class="line">mtime = Wed Oct <span class="number">14</span> <span class="number">05</span>:<span class="number">19</span>:<span class="number">00</span> EDT <span class="number">2015</span></span><br><span class="line">pZxid = <span class="number">0x200000009</span></span><br><span class="line">cversion = <span class="number">1</span></span><br><span class="line">dataVersion = <span class="number">0</span></span><br><span class="line">aclVersion = <span class="number">0</span></span><br><span class="line">ephemeralOwner = <span class="number">0x0</span></span><br><span class="line">dataLength = <span class="number">6</span></span><br><span class="line">numChildren = <span class="number">1</span></span><br></pre></td></tr></table></figure>
-<p>The command about operations on the <code>znode</code>s, including creating, getting, deleting and etc, will be introduced in the following tutorials.</p>
-<h4 id="Example_2:_Create_a_recursive_znode_named_“znode_rtest3”_with_data_“znode_rtest_data”">Example 2: Create a recursive znode named “znode_rtest3” with data “znode_rtest_data”</h4><p>Only one important thing you have to keep it in mind, when you create a new recursive <code>znode</code>, the znodes/paths along have to be already created. Otherwise, exceptions will be thrown.</p>
-<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[<span class="string">zk:</span> <span class="string">localhost:</span><span class="number">2181</span>(CONNECTED) <span class="number">3</span>] ls /</span><br><span class="line">[zookeeper, znode_test]</span><br><span class="line">[<span class="string">zk:</span> <span class="string">localhost:</span><span class="number">2181</span>(CONNECTED) <span class="number">4</span>] create <span class="regexp">/znode_rtest1/</span>znode_rtest2/znode_rtest3 znode_rtest_data3</span><br><span class="line">Node does not <span class="string">exist:</span> <span class="regexp">/znode_rtest1/</span>znode_rtest2/znode_rtest3</span><br><span class="line">[<span class="string">zk:</span> <span class="string">localhost:</span><span class="number">2181</span>(CONNECTED) <span class="number">5</span>] create /znode_rtest1 znode_rtest_data1</span><br><span class="line">Created /znode_rtest1</span><br><span class="line">[<span class="string">zk:</span> <span class="string">localhost:</span><span class="number">2181</span>(CONNECTED) <span class="number">6</span>] create <span class="regexp">/znode_rtest1/</span>znode_rtest2/znode_rtest3 znode_rtest_data3</span><br><span class="line">Node does not <span class="string">exist:</span> <span class="regexp">/znode_rtest1/</span>znode_rtest2/znode_rtest3</span><br><span class="line">[<span class="string">zk:</span> <span class="string">localhost:</span><span class="number">2181</span>(CONNECTED) <span class="number">7</span>] create <span class="regexp">/znode_rtest1/</span>znode_rtest2 znode_rtest_data2</span><br><span class="line">Created <span class="regexp">/znode_rtest1/</span>znode_rtest2</span><br><span class="line">[<span class="string">zk:</span> <span class="string">localhost:</span><span class="number">2181</span>(CONNECTED) <span class="number">8</span>] create <span class="regexp">/znode_rtest1/</span>znode_rtest2/znode_rtest3 znode_rtest_data3</span><br><span class="line">Created <span class="regexp">/znode_rtest1/</span>znode_rtest2/znode_rtest3</span><br></pre></td></tr></table></figure>
-<h4 id="Different_Types_of_Znodes">Different Types of Znodes</h4><p>In <code>ZooKeeper</code> there are 3 types of znodes: <strong>persistent</strong>, <strong>ephemeral</strong>, and <strong>sequential</strong>.</p>
-<ol>
-<li><p>Persistent Znodes (Default)</p>
-<p> These are the <strong>default</strong> znodes in <code>ZooKeeper</code>. They will stay in the <code>ZooKeeper</code> server <strong>permanently</strong>, as long as any other clients (including the creator) leave it alone.</p>
- <figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">create</span> /znode mydata</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>Ephemeral Znodes</p>
-<p> <strong>Ephemeral znodes</strong> (also referred as <strong>session znodes</strong>) are <strong>temporary</strong> znodes. Unlike the <strong>persistent znodes</strong>, they are <strong>destroyed</strong> as soon as the creator client logs out of the <code>ZooKeeper</code> server. For example, let’s say <em>client1</em> created <em>eznode1</em>. Once <em>client1</em> logs out of the <code>ZooKeeper</code> server, the <code>eznode1</code> gets destroyed.</p>
- <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator"><span class="keyword">create</span> –<span class="keyword">e</span> /eznode mydata</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>Sequential Znodes</p>
-<p> <strong>Sequential znode</strong> is given a <strong>10-digit number</strong> in a <strong>numerical order</strong> at the end of its name. Let’s say <em>client1</em> created a <em>sznode1</em>. In the <code>ZooKeeper</code> server, the <em>sznode1</em> will be named like this:</p>
-<blockquote>
-<p>sznode0000000001</p>
-</blockquote>
-<p> If <em>client1</em> creates another <strong>sequential znode</strong>, it would bear the <strong>next number</strong> in a sequence. So the next <strong>sequential znode</strong> will be called <em>[znode-name]0000000002</em>.</p>
- <figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">create</span> –s /sznode mydata</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<h3 id="ACL">ACL</h3><p>ACL (Access Control List) is basically an authentication mechanism implemented in <code>ZooKeeper</code>. It makes <code>znodes</code> accessible to users, depending on how it is set. This part will be introduced in the following tutorials.</p>
-<h3 id="Ensemble_and_Quorum">Ensemble and Quorum</h3><p><code>ZooKeeper</code> service can be replicated over a sets of hosts called an <code>ensemble</code>. A replicated group of servers in the same application is called a <code>quorum</code>. All servers in the <code>quorum</code> have copies of the <strong>same configuration</strong> file. <code>QuorumPeers</code> will form a <code>ZooKeeper ensemble</code>.</p>
-<h2 id="Reference">Reference</h2><ul>
-<li><a href="http://zookeeper.apache.org/" target="_blank" rel="external">Apache ZooKeeper - Official Site</a></li>
-<li><a href="http://myjeeva.com/zookeeper-cluster-setup.html" target="_blank" rel="external">ZooKeeper Cluster (Multi-Server) Setup</a></li>
-<li><a href="https://ihong5.wordpress.com/2014/06/24/znode-types-and-how-to-create-read-delete-and-write-in-zookeeper-via-zkclient/" target="_blank" rel="external">ZNode Types and How to Create, Read, Delete, and Write in ZooKeeper</a></li>
-</ul>
-]]></content>
-    <summary type="html">
-    <![CDATA[<h2 id="Overview">Overview</h2><p>Apache <code>ZooKeeper</code> is a <strong>highly reliable</strong> <em>distributed coordination service</]]>
-    </summary>
-    
-      <category term="Apache" scheme="http://dixudx.github.io/tags/Apache/"/>
-    
-      <category term="ZooKeeper" scheme="http://dixudx.github.io/tags/ZooKeeper/"/>
-    
-      <category term="Tutorial" scheme="http://dixudx.github.io/categories/Tutorial/"/>
-    
-  </entry>
   
   <entry>
     <title><![CDATA[Dynamically Show the Overall Progress of Running Jenkins Flows]]></title>
