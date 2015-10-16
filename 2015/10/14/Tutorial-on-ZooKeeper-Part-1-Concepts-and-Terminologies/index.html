@@ -3,20 +3,23 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Tutorial on ZooKeeper – Part 1: Concepts and Terminology | Stephen&#39;s Blog</title>
+  <title>Tutorial on ZooKeeper – Part 1: Concepts and Terminologies | Stephen&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="OverviewApache ZooKeeper is a highly reliable distributed coordination service for distributed applications to coordinate with each other through a shared hierarchical name space, which is organized s">
+  <meta name="description" content="Overview
+Apache ZooKeeper is a highly reliable distributed coordination service for distributed applications to coordinate with each other through a shared hierarchical name space, which is organized">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Tutorial on ZooKeeper – Part 1: Concepts and Terminology">
-<meta property="og:url" content="http://dixudx.github.io/2015/10/14/Tutorial-on-ZooKeeper-Part-1-Concepts-and-Terminology/index.html">
+<meta property="og:title" content="Tutorial on ZooKeeper – Part 1: Concepts and Terminologies">
+<meta property="og:url" content="http://dixudx.github.io/2015/10/14/Tutorial-on-ZooKeeper-Part-1-Concepts-and-Terminologies/index.html">
 <meta property="og:site_name" content="Stephen's Blog">
-<meta property="og:description" content="OverviewApache ZooKeeper is a highly reliable distributed coordination service for distributed applications to coordinate with each other through a shared hierarchical name space, which is organized s">
+<meta property="og:description" content="Overview
+Apache ZooKeeper is a highly reliable distributed coordination service for distributed applications to coordinate with each other through a shared hierarchical name space, which is organized">
 <meta property="og:image" content="http://dixudx.github.io/images/bigdata-zookeeper.png">
 <meta property="og:image" content="http://dixudx.github.io/images/zknamespace.jpg">
-<meta property="og:updated_time" content="2015-10-15T15:51:37.000Z">
+<meta property="og:updated_time" content="2015-10-16T13:52:39.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Tutorial on ZooKeeper – Part 1: Concepts and Terminology">
-<meta name="twitter:description" content="OverviewApache ZooKeeper is a highly reliable distributed coordination service for distributed applications to coordinate with each other through a shared hierarchical name space, which is organized s">
+<meta name="twitter:title" content="Tutorial on ZooKeeper – Part 1: Concepts and Terminologies">
+<meta name="twitter:description" content="Overview
+Apache ZooKeeper is a highly reliable distributed coordination service for distributed applications to coordinate with each other through a shared hierarchical name space, which is organized">
   
   
     <link rel="icon" href="/favicon.png">
@@ -94,7 +97,7 @@
             </div>
             <div class="main-body-content">
               
-  <article id="post-Tutorial-on-ZooKeeper-Part-1-Concepts-and-Terminology" class="article article-single article-type-post" itemscope itemprop="blogPost">
+  <article id="post-Tutorial-on-ZooKeeper-Part-1-Concepts-and-Terminologies" class="article article-single article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
       <!--  -->
       
@@ -102,19 +105,20 @@
           
   
     <h1 class="article-title" itemprop="name">
-      Tutorial on ZooKeeper – Part 1: Concepts and Terminology
+      Tutorial on ZooKeeper – Part 1: Concepts and Terminologies
     </h1>
   
 
         </header>
       
       <p class="article-byline">
-        <a href="/2015/10/14/Tutorial-on-ZooKeeper-Part-1-Concepts-and-Terminology/" class="article-date">
+        <a href="/2015/10/14/Tutorial-on-ZooKeeper-Part-1-Concepts-and-Terminologies/" class="article-date">
   <time datetime="2015-10-14T12:25:21.000Z" itemprop="datePublished">2015-10-14</time>
 </a>
       </p>
       <div class="article-entry" itemprop="articleBody">
-        <h2 id="Overview">Overview</h2><p>Apache <code>ZooKeeper</code> is a <strong>highly reliable</strong> <em>distributed coordination service</em> for distributed applications to coordinate with each other through a shared hierarchical name space, which is organized similarly to a standard file system path. The name space consists of data registers - called <code>znodes</code>, in <code>ZooKeeper</code> parlance - and these are similar to files and directories which can provide strictly ordered access to the <code>znodes</code>. Unlike a typical file system, which is designed for storage, <code>ZooKeeper</code> data is kept <strong>in-memory</strong>, which means <code>ZooKeeper</code> can achieve <strong>high throughput</strong> and <strong>low latency numbers</strong>. It is especially fast in “read-dominant” workloads. <code>ZooKeeper</code> applications run on thousands of machines, and it performs best where <strong>reads</strong> are more common than <strong>writes</strong>, at ratios of around <strong>10:1</strong>.</p>
+        <h2 id="Overview">Overview</h2><p><img src="/images/bigdata-zookeeper.png" alt=""></p>
+<p>Apache <code>ZooKeeper</code> is a <strong>highly reliable</strong> <em>distributed coordination service</em> for distributed applications to coordinate with each other through a shared hierarchical name space, which is organized similarly to a standard file system path. The name space consists of data registers - called <code>znodes</code>, in <code>ZooKeeper</code> parlance - and these are similar to files and directories which can provide strictly ordered access to the <code>znodes</code>. Unlike a typical file system, which is designed for storage, <code>ZooKeeper</code> data is kept <strong>in-memory</strong>, which means <code>ZooKeeper</code> can achieve <strong>high throughput</strong> and <strong>low latency numbers</strong>. It is especially fast in “read-dominant” workloads. <code>ZooKeeper</code> applications run on thousands of machines, and it performs best where <strong>reads</strong> are more common than <strong>writes</strong>, at ratios of around <strong>10:1</strong>.</p>
 <p><code>ZooKeeper</code> is <strong>ordered</strong>. <code>ZooKeeper</code> stamps each update with a number that reflects the order of all <code>ZooKeeper</code> transactions. Subsequent operations can use the order to implement higher-level abstractions, such as <strong>synchronization primitives</strong>.</p>
 <p>The <strong>performance</strong> aspects of <code>ZooKeeper</code> allow it to be used in <strong>large distributed systems</strong>. The <strong>reliability</strong> aspects prevent it from becoming the single point of failure in <strong>big systems</strong>. Its <strong>strict ordering</strong> allows <strong>sophisticated synchronization primitives</strong> to be implemented at the client.</p>
 <p>From this part on, I will write a series of <a href="/tags/ZooKeeper/">tutorials on ZooKeeper</a>. Some concepts and terminologies are introduced here first.</p>
@@ -132,7 +136,6 @@
 <li><strong>Timeliness</strong> - The clients view of the system is guaranteed to be up-to-date within a certain time bound.</li>
 </ul>
 <p>Learn more about <code>ZooKeeper</code> on the <a href="http://zookeeper.apache.org/" target="_blank" rel="external">ZooKeeper Official Site</a>.</p>
-<p><img src="/images/bigdata-zookeeper.png" alt=""></p>
 <h2 id="Some_Concepts_and_Terminology">Some Concepts and Terminology</h2><h3 id="Data_model_and_the_hierarchical_namespace">Data model and the hierarchical namespace</h3><p>Just as mentioned in the <a href="./#Overview">Overview</a>, the name space provided by <code>ZooKeeper</code> is much like that of a standard file system. A name is a sequence of path elements separated by a <strong>slash</strong> (“/“). Every node in ZooKeeper’s name space is identified by a path, which always needs to start with the <strong>root znode</strong> ( “/“ ).</p>
 <p><img src="/images/zknamespace.jpg" alt="ZooKeeper&#39;s Hierarchical Namespace"></p>
 <h3 id="Znode">Znode</h3><p>Unlike standard file systems, each node in a <code>ZooKeeper</code> namespace can have <strong>data</strong> associated with it as well as children. You can create some sub-znodes/children znodes in the <code>znode</code>. It is like having a file-system that allows a file to also be a directory. (<code>ZooKeeper</code> was designed to store <strong>coordination data</strong>: <em>status information</em>, <em>configuration</em>, <em>location information</em>, etc., so the data stored at each node is usually small, in the byte to kilobyte range.) We use the term <code>znode</code> to make it clear that we are talking about <code>ZooKeeper</code> data nodes.</p>
@@ -167,7 +170,9 @@
 </li>
 </ol>
 <h3 id="ACL">ACL</h3><p>ACL (Access Control List) is basically an authentication mechanism implemented in <code>ZooKeeper</code>. It makes <code>znodes</code> accessible to users, depending on how it is set. This part will be introduced in the following tutorials.</p>
-<h3 id="Ensemble_and_Quorum">Ensemble and Quorum</h3><p><code>ZooKeeper</code> service can be replicated over a sets of hosts called an <code>ensemble</code>. A replicated group of servers in the same application is called a <code>quorum</code>. All servers in the <code>quorum</code> have copies of the <strong>same configuration</strong> file. <code>QuorumPeers</code> will form a <code>ZooKeeper ensemble</code>.</p>
+<h3 id="Ensemble_and_Quorum">Ensemble and Quorum</h3><p><code>ZooKeeper</code> service can be replicated over a sets of hosts called an <code>ensemble</code>. As long as a <strong>majority</strong> of the <code>ensemble</code> are up, the service will be available. For the <code>ZooKeeper</code> service to be active, there must be a <code>majority</code> of <strong>non-failing</strong> machines that can communicate with each other. <strong>Failure</strong> in this context means a machine crash, or some error in the network that partitions a server off from the <strong>majority</strong>. To create a deployment that can tolerate the <strong>failure</strong> of <em>F</em> machines, you should count on deploying <em>2xF+1</em> machines. Thus, a deployment that consists of three machines can handle one <strong>failure</strong>, and a deployment of five machines can handle two <strong>failures</strong>. Note that a deployment of six machines can only handle two <strong>failures</strong> since three machines is not a <strong>majority</strong>. For this reason, <code>ZooKeeper</code> deployments are usually made up of an <strong>odd number of machines</strong>. <strong>Three</strong> <code>ZooKeeper</code> servers is the <strong>minimum recommended size</strong> for an <code>ensemble</code>, and we also recommend that they run on separate machines.</p>
+<p>A replicated group of servers in the same application is called a <code>quorum</code>. All servers in the <code>quorum</code> have copies of the <strong>same configuration</strong> file. <code>QuorumPeers</code> will form a <code>ZooKeeper ensemble</code>. A <code>quorum</code> is represented by a <strong>strict majority</strong> of nodes. You can have one node in your <code>ensemble</code>, but it won’t be a <em>highly available</em> or <em>reliable</em> system. If you have two nodes in your <code>ensemble</code>, you would need both to be up to keep the service running because one out of two nodes is not a <strong>strict majority</strong>. If you have three nodes in the <code>ensemble</code>, one can go down, and you would still have a functioning service (two out of three is a <strong>strict majority</strong>). </p>
+<p>If a <code>quorum</code> of nodes are not available in an <code>ensemble</code>, the <code>ZooKeeper</code> service is nonfunctional.</p>
 <h2 id="Reference">Reference</h2><ul>
 <li><a href="http://zookeeper.apache.org/" target="_blank" rel="external">Apache ZooKeeper - Official Site</a></li>
 <li><a href="http://myjeeva.com/zookeeper-cluster-setup.html" target="_blank" rel="external">ZooKeeper Cluster (Multi-Server) Setup</a></li>
@@ -176,9 +181,9 @@
 
       </div>
       <footer class="article-footer">
-        <a data-url="http://dixudx.github.io/2015/10/14/Tutorial-on-ZooKeeper-Part-1-Concepts-and-Terminology/" data-id="cifsfku2b00009syg91nldme9" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+        <a data-url="http://dixudx.github.io/2015/10/14/Tutorial-on-ZooKeeper-Part-1-Concepts-and-Terminologies/" data-id="ciftr3lzp0007m6ygvkfhbjny" class="article-share-link"><i class="fa fa-share"></i>Share</a>
         
-          <a href="http://dixudx.github.io/2015/10/14/Tutorial-on-ZooKeeper-Part-1-Concepts-and-Terminology/#comments" class="article-comment-link"><i class="fa fa-comments"></i>Comments</a>
+          <a href="http://dixudx.github.io/2015/10/14/Tutorial-on-ZooKeeper-Part-1-Concepts-and-Terminologies/#comments" class="article-comment-link"><i class="fa fa-comments"></i>Comments</a>
         
         
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Apache/">Apache</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ZooKeeper/">ZooKeeper</a></li></ul>
@@ -215,6 +220,16 @@
     
 <nav id="article-nav">
   
+    <a href="/2015/10/16/Tutorial-on-ZooKeeper-Part-2-Installation-and-Configuration/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">newer</strong>
+      <p class="article-nav-title">
+        
+          Tutorial on ZooKeeper – Part 2: Installation and Configuration
+        
+      </p>
+      <i class="icon fa fa-chevron-right" id="icon-chevron-right"></i>
+    </a>
+  
   
     <a href="/2015/09/28/Dynamically-Show-the-Overall-Progress-of-Running-Jenkins-Flows/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">older</strong>
@@ -237,10 +252,10 @@
             
             <div class="item-thumbnail">
               
-<a href="/2015/10/14/Tutorial-on-ZooKeeper-Part-1-Concepts-and-Terminology/" class="thumbnail">
+<a href="/2015/10/16/Tutorial-on-ZooKeeper-Part-2-Installation-and-Configuration/" class="thumbnail">
   
-    <span style="background-image:url(/images/bigdata-zookeeper.png
-)" alt="Tutorial on ZooKeeper – Part 1: Concepts and Terminology" class="thumbnail-image"></span>
+    <span style="background-image:url(/images/zoo_keeper1.png
+)" alt="Tutorial on ZooKeeper – Part 2: Installation and Configuration" class="thumbnail-image"></span>
   
 </a>
 
@@ -248,7 +263,27 @@
             
             <div class="item-inner">
               <p class="item-category"><a class="article-category-link" href="/categories/Tutorial/">Tutorial</a></p>
-              <p class="item-title"><a href="/2015/10/14/Tutorial-on-ZooKeeper-Part-1-Concepts-and-Terminology/" class="title">Tutorial on ZooKeeper – Part 1: Concepts and Terminology</a></p>
+              <p class="item-title"><a href="/2015/10/16/Tutorial-on-ZooKeeper-Part-2-Installation-and-Configuration/" class="title">Tutorial on ZooKeeper – Part 2: Installation and Configuration</a></p>
+              <p class="item-date"><time datetime="2015-10-16T05:37:58.000Z" itemprop="datePublished">2015-10-16</time></p>
+            </div>
+          </li>
+        
+          <li>
+            
+            <div class="item-thumbnail">
+              
+<a href="/2015/10/14/Tutorial-on-ZooKeeper-Part-1-Concepts-and-Terminologies/" class="thumbnail">
+  
+    <span style="background-image:url(/images/bigdata-zookeeper.png
+)" alt="Tutorial on ZooKeeper – Part 1: Concepts and Terminologies" class="thumbnail-image"></span>
+  
+</a>
+
+            </div>
+            
+            <div class="item-inner">
+              <p class="item-category"><a class="article-category-link" href="/categories/Tutorial/">Tutorial</a></p>
+              <p class="item-title"><a href="/2015/10/14/Tutorial-on-ZooKeeper-Part-1-Concepts-and-Terminologies/" class="title">Tutorial on ZooKeeper – Part 1: Concepts and Terminologies</a></p>
               <p class="item-date"><time datetime="2015-10-14T12:25:21.000Z" itemprop="datePublished">2015-10-14</time></p>
             </div>
           </li>
@@ -302,7 +337,7 @@
   <div class="widget-wrap widget-list">
     <h3 class="widget-title">categories</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Projects/">Projects</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Tutorial/">Tutorial</a><span class="category-list-count">1</span></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Projects/">Projects</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Tutorial/">Tutorial</a><span class="category-list-count">2</span></li></ul>
     </div>
   </div>
 
@@ -312,7 +347,7 @@
   <div class="widget-wrap widget-list">
     <h3 class="widget-title">archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a><span class="archive-list-count">2</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a><span class="archive-list-count">2</span></li></ul>
     </div>
   </div>
 
@@ -322,7 +357,7 @@
   <div class="widget-wrap widget-list">
     <h3 class="widget-title">tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Apache/">Apache</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DevOps/">DevOps</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Jenkins/">Jenkins</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/">Python</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RTC/">RTC</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ZeroMQ/">ZeroMQ</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ZooKeeper/">ZooKeeper</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pypi/">pypi</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rtcclient/">rtcclient</a><span class="tag-list-count">1</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Apache/">Apache</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DevOps/">DevOps</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Jenkins/">Jenkins</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/">Python</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RTC/">RTC</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ZeroMQ/">ZeroMQ</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ZooKeeper/">ZooKeeper</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pypi/">pypi</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rtcclient/">rtcclient</a><span class="tag-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -332,7 +367,7 @@
   <div class="widget-wrap widget-float">
     <h3 class="widget-title">tag cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Apache/" style="font-size: 10px;">Apache</a> <a href="/tags/DevOps/" style="font-size: 10px;">DevOps</a> <a href="/tags/Jenkins/" style="font-size: 10px;">Jenkins</a> <a href="/tags/Python/" style="font-size: 10px;">Python</a> <a href="/tags/RTC/" style="font-size: 10px;">RTC</a> <a href="/tags/ZeroMQ/" style="font-size: 10px;">ZeroMQ</a> <a href="/tags/ZooKeeper/" style="font-size: 10px;">ZooKeeper</a> <a href="/tags/pypi/" style="font-size: 10px;">pypi</a> <a href="/tags/rtcclient/" style="font-size: 10px;">rtcclient</a>
+      <a href="/tags/Apache/" style="font-size: 20px;">Apache</a> <a href="/tags/DevOps/" style="font-size: 10px;">DevOps</a> <a href="/tags/Jenkins/" style="font-size: 10px;">Jenkins</a> <a href="/tags/Python/" style="font-size: 10px;">Python</a> <a href="/tags/RTC/" style="font-size: 10px;">RTC</a> <a href="/tags/ZeroMQ/" style="font-size: 10px;">ZeroMQ</a> <a href="/tags/ZooKeeper/" style="font-size: 20px;">ZooKeeper</a> <a href="/tags/pypi/" style="font-size: 10px;">pypi</a> <a href="/tags/rtcclient/" style="font-size: 10px;">rtcclient</a>
     </div>
   </div>
 
@@ -378,7 +413,7 @@
 <script>
   var disqus_shortname = 'dixume';
   
-  var disqus_url = 'http://dixudx.github.io/2015/10/14/Tutorial-on-ZooKeeper-Part-1-Concepts-and-Terminology/';
+  var disqus_url = 'http://dixudx.github.io/2015/10/14/Tutorial-on-ZooKeeper-Part-1-Concepts-and-Terminologies/';
   
   (function(){
     var dsq = document.createElement('script');
