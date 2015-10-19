@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Tutorial on ZooKeeper – Part 3: Setup ZooKeeper Cluster | Stephen&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="In last tutorial, how to install and configure ZooKeeper in standalone mode and replicated mode is introduced. Now I will give you an explicit example on how to setup this replicated mode ( also known">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Tutorial on ZooKeeper – Part 3: Setup ZooKeeper Cluster">
+<meta property="og:url" content="http://dixudx.github.io/2015/10/17/Tutorial-on-ZooKeeper-Part-3-Setup-ZooKeeper-Cluster/index.html">
+<meta property="og:site_name" content="Stephen's Blog">
+<meta property="og:description" content="In last tutorial, how to install and configure ZooKeeper in standalone mode and replicated mode is introduced. Now I will give you an explicit example on how to setup this replicated mode ( also known">
+<meta property="og:image" content="http://dixudx.github.io/images/zookeeper-1-638.jpg">
+<meta property="og:updated_time" content="2015-10-19T16:36:20.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Tutorial on ZooKeeper – Part 3: Setup ZooKeeper Cluster">
+<meta name="twitter:description" content="In last tutorial, how to install and configure ZooKeeper in standalone mode and replicated mode is introduced. Now I will give you an explicit example on how to setup this replicated mode ( also known">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  
+    <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+  
+  
+    <link rel="stylesheet" href="/scrollLoading/style.css" type="text/css">
+  
+  
+
+
+  
+    <style type="text/css">
+      .logo { background-image:url(/images/blog_logo_light.png); }
+    </style>
+  
+
+  
+    <link href='//fonts.useso.com/css?family=Titillium+Web:300,400,600' rel='stylesheet' type='text/css'>
+    <link href="//fonts.useso.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css" type="text/css">
+</head>
+
+<body>
+  <div id="wrap">
+    <header id="header">
+  <div id="header-outer" class="outer">
+    <div class="container">
+      <div class="container-inner">
+        <div id="header-title">
+          <h1 class="logo-wrap">
+            <a href="/" class="logo"></a>
+          </h1>
+          
+            <h2 class="subtitle-wrap">
+              <p class="subtitle">To me, the past is black and white, but the future is always colorful.</p>
+            </h2>
+          
+        </div>
+        <div id="header-inner" class="nav-container">
+          <a id="main-nav-toggle" class="nav-icon fa fa-bars"></a>
+          <div class="nav-container-inner">
+            <ul id="main-nav">
+              
+                <li class="main-nav-list-item" ><a class="main-nav-list-link" href="/">Home</a></li>
+              
+                    <ul class="main-nav-list"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Projects/">Projects</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Tutorial/">Tutorial</a></li></ul>
+                  
+                <li class="main-nav-list-item" ><a class="main-nav-list-link" href="/about/index.html">About</a></li>
+              
+            </ul>
+            <nav id="sub-nav">
+              <div id="search-form-wrap">
+                <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><input type="hidden" name="sitesearch" value="http://dixudx.github.io"></form>
+              </div>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+    <div class="container">
+      <div class="main-body container-inner">
+        <div class="main-body-inner">
+          <section id="main">
+            <div class="main-body-header">
+
+              <h1 class="header"><a class="page-title-link" href="/categories/Tutorial/">Tutorial</a></h1>
+            </div>
+            <div class="main-body-content">
+              
+  <article id="post-Tutorial-on-ZooKeeper-Part-3-Setup-ZooKeeper-Cluster" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+      <!--  -->
+      
+        <header class="article-header">
+          
+  
+    <h1 class="article-title" itemprop="name">
+      Tutorial on ZooKeeper – Part 3: Setup ZooKeeper Cluster
+    </h1>
+  
+
+        </header>
+      
+      <p class="article-byline">
+        <a href="/2015/10/17/Tutorial-on-ZooKeeper-Part-3-Setup-ZooKeeper-Cluster/" class="article-date">
+  <time datetime="2015-10-17T02:32:18.000Z" itemprop="datePublished">2015-10-17</time>
+</a>
+      </p>
+      <div class="article-entry" itemprop="articleBody">
+        <p>In <a href="/2015/10/16/Tutorial-on-ZooKeeper-Part-2-Installation-and-Configuration/">last tutorial</a>, how to install and configure <code>ZooKeeper</code> in <strong>standalone mode</strong> and <strong>replicated mode</strong> is introduced. Now I will give you an explicit example on how to setup this <strong>replicated mode</strong> ( also known as <code>ZooKeeper Cluster</code> ) starting from scratch.</p>
+<p><img src="/images/zookeeper-1-638.jpg" alt=""></p>
+<h2 id="Pre-requisites">Pre-requisites</h2><p>Before the deployment, please see <a href="https://zookeeper.apache.org/doc/r3.4.6/zookeeperAdmin.html#sc_systemReq" target="_blank" rel="external">System Requirements</a> in the Admin guide to install some required software especially </p>
+<h2 id="ZooKeeper_Deployment_Topology">ZooKeeper Deployment Topology</h2><p>Few things we have to be clear enough before we start the deployment of <code>ZooKeeper</code>.</p>
+<ol>
+<li><p>The number of <code>ZooKeeper</code> servers that you want to form your <code>ZooKeeper Cluster</code>.</p>
+<p> From the <a href="/2015/10/14/Tutorial-on-ZooKeeper-Part-1-Concepts-and-Terminologies/">first tutorial</a>, we know that <strong>odd</strong> number of machines are best for a cluster. In my example, I use 5 servers to form the cluster with tolerance of <a href="/2015/10/14/Tutorial-on-ZooKeeper-Part-1-Concepts-and-Terminologies/#Ensemble_and_Quorum">2 failures</a>.</p>
+</li>
+<li><p>About the boxes/physical machines that you want to deploy on.</p>
+<p> Of course, you can install all your <code>ZooKeeper</code> servers on a single box. But for better <strong>high availability</strong> (aka <strong>HA</strong>), you should not put all the <code>ZooKeeper</code> servers into one sinlge basket, because two is better than one and more is better than less.</p>
+<blockquote>
+<p>To achieve the highest probability of tolerating a <strong>failure</strong> you should try to make machine failures <strong>independent</strong>. For example, if most of the machines share the same <strong>switch</strong>, failure of that switch could cause a correlated failure and bring down the service. The same holds true of <strong>shared power circuits</strong>, <strong>cooling systems</strong>, etc.</p>
+</blockquote>
+<p> In my example, I deploy the cluster on 2 boxes with ip <code>192.168.0.100</code> and <code>192.168.0.101</code>.</p>
+</li>
+<li><p>Ports on every server, including client port (default 2181), quorum port (default 2888) and leader election port (default 3888).</p>
+<p> In order to deploy several servers on a single box, all the three ports here have to be modified accordingly.</p>
+<p> Below is my configuration, which will be configured in <code>zoo.cfg</code> on every server.</p>
+ <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">|  Server ID    | Client Port | Quorum Port | Leader Election Port |</span><br><span class="line">| <span class="number">192.168</span><span class="number">.0</span><span class="number">.100</span> |     <span class="number">2181</span>    |    <span class="number">2888</span>     |         <span class="number">3888</span>         |</span><br><span class="line">| <span class="number">192.168</span><span class="number">.0</span><span class="number">.100</span> |     <span class="number">2182</span>    |    <span class="number">2889</span>     |         <span class="number">3889</span>         |</span><br><span class="line">| <span class="number">192.168</span><span class="number">.0</span><span class="number">.100</span> |     <span class="number">2183</span>    |    <span class="number">2890</span>     |         <span class="number">3890</span>         |</span><br><span class="line">| <span class="number">192.168</span><span class="number">.0</span><span class="number">.101</span> |     <span class="number">2181</span>    |    <span class="number">2888</span>     |         <span class="number">3888</span>         |</span><br><span class="line">| <span class="number">192.168</span><span class="number">.0</span><span class="number">.101</span> |     <span class="number">2181</span>    |    <span class="number">2889</span>     |         <span class="number">3889</span>         |</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Where to put data (attribute <code>dataDir</code> in <code>zoo.cfg</code>) for <code>ZooKeeper</code> Server?</p>
+<p> <code>dataDir</code> is the location where <code>ZooKeeper</code> will store the <strong>in-memory database snapshots</strong>(<em>persistent</em> copies of the <code>znodes</code>) and, unless specified otherwise, the transaction log of updates to the database.</p>
+<p> As changes are made to the <code>znodes</code>, these changes are appended to a transaction log, occasionally. When a log grows large, a snapshot of the current state of all <code>znodes</code> will be written to the filesystem.  This snapshot supercedes all previous logs.</p>
+<p> In my exmpale, I use <code>/var/lib/zookeeper/zookeeper-[id]/data</code> as data home.</p>
+</li>
+<li><p>Any performance improvement settings?</p>
+<p> Just as the <a href="https://zookeeper.apache.org/doc/r3.4.6/zookeeperAdmin.html#Single+Machine+Requirements" target="_blank" rel="external">admin guide</a> said,</p>
+<blockquote>
+<p>If <code>ZooKeeper</code> has to contend with other applications for access to resourses like <em>storage media</em>, <em>CPU</em>, <em>network</em>, or <em>memory</em>, its performance will suffer markedly. <code>ZooKeeper</code> has <strong>strong durability guarantees</strong>, which means it uses storage media to <strong>log changes</strong> before the operation responsible for the change is allowed to complete. You should be aware of this dependency then, and take great care if you want to ensure that <code>ZooKeeper</code> operations aren’t held up by your media. Here are some things you can do to minimize that sort of degradation:</p>
+<ul>
+<li><p><code>ZooKeeper</code>‘s transaction log must be on a <strong>dedicated</strong> device. (A dedicated partition is not enough.) <code>ZooKeeper</code> writes the log sequentially, without seeking Sharing your log device with other processes can cause seeks and contention, which in turn can cause multi-second delays. For this setting, please refer to attribute <code>dataLogDir</code> (which allows a <strong>dedicated</strong> log device to be used, and helps <strong>avoid competition between logging and snaphots</strong>) in <code>zoo.cfg</code>. You can find more <a href="https://zookeeper.apache.org/doc/r3.4.6/zookeeperAdmin.html#sc_advancedConfiguration" target="_blank" rel="external">here</a>.</p>
+</li>
+<li><p>Do not put <code>ZooKeeper</code> in a situation that can cause a <strong>swap</strong>. In order for <code>ZooKeeper</code> to function with any sort of timeliness, it simply <strong>cannot be allowed to swap</strong>. Therefore, make certain that the maximum <strong>heap size</strong> given to ZooKeeper is not bigger than the amount of real memory available to ZooKeeper. For more on this, see <a href="https://zookeeper.apache.org/doc/r3.4.6/zookeeperAdmin.html#sc_commonProblems" target="_blank" rel="external">Things to Avoid</a>.</p>
+</li>
+</ul>
+</blockquote>
+<p> Having a <strong>dedicated</strong> log device has a large impact on <strong>throughput and stable latencies</strong>. It is highly recommened to dedicate a log device and set <code>dataLogDir</code> to point to a directory on that device, and then make sure to point <code>dataDir</code> to a directory not residing on that device.</p>
+</li>
+</ol>
+<h2 id="ZooKeeper_Cluster_(Multi-Server)_Setup">ZooKeeper Cluster (Multi-Server) Setup</h2><p>Let’s begin installation and configuration of <code>ZooKeeper</code>.</p>
+<h3 id="Step_1:_Create_Directory_Structure">Step 1: Create Directory Structure</h3><ul>
+<li><p>on host <em>192.168.0.100</em></p>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ip-<span class="number">192</span>-<span class="number">168</span>-<span class="number">0</span>-<span class="number">100</span>:~$ mkdir -p /var/lib/zookeeper/zookeeper-<span class="number">1</span> /var/lib/zookeeper/zookeeper-<span class="number">2</span> /var/lib/zookeeper/zookeeper-<span class="number">3</span></span><br><span class="line">ip-<span class="number">192</span>-<span class="number">168</span>-<span class="number">0</span>-<span class="number">100</span>:~$ mkdir -p /var/lib/zookeeper/zookeeper-<span class="number">1</span>/data /var/lib/zookeeper/zookeeper-<span class="number">2</span>/data /var/lib/zookeeper/zookeeper-<span class="number">3</span>/data</span><br><span class="line">ip-<span class="number">192</span>-<span class="number">168</span>-<span class="number">0</span>-<span class="number">100</span>:~$ mkdir -p /var/lib/zookeeper/zookeeper-<span class="number">1</span>/<span class="built_in">log</span> /var/lib/zookeeper/zookeeper-<span class="number">2</span>/<span class="built_in">log</span> /var/lib/zookeeper/zookeeper-<span class="number">3</span>/<span class="built_in">log</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>on host <em>192.168.0.101</em></p>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ip-<span class="number">192</span>-<span class="number">168</span>-<span class="number">0</span>-<span class="number">101</span>:~$ mkdir -p /var/lib/zookeeper/zookeeper-<span class="number">4</span> /var/lib/zookeeper/zookeeper-<span class="number">5</span></span><br><span class="line">ip-<span class="number">192</span>-<span class="number">168</span>-<span class="number">0</span>-<span class="number">101</span>:~$ mkdir -p /var/lib/zookeeper/zookeeper-<span class="number">4</span>/data /var/lib/zookeeper/zookeeper-<span class="number">5</span>/data</span><br><span class="line">ip-<span class="number">192</span>-<span class="number">168</span>-<span class="number">0</span>-<span class="number">101</span>:~$ mkdir -p /var/lib/zookeeper/zookeeper-<span class="number">4</span>/<span class="built_in">log</span> /var/lib/zookeeper/zookeeper-<span class="number">5</span>/<span class="built_in">log</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Let’s take a look above created directory structure</p>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">ip-<span class="number">192</span>-<span class="number">168</span>-<span class="number">0</span>-<span class="number">100</span>:~$ tree /var/lib/zookeeper</span><br><span class="line"></span><br><span class="line">/var/lib/zookeeper</span><br><span class="line">├── zookeeper-<span class="number">1</span></span><br><span class="line">│   └── data</span><br><span class="line">│   └── <span class="built_in">log</span></span><br><span class="line">└── zookeeper-<span class="number">2</span></span><br><span class="line">│   └── data</span><br><span class="line">│   └── <span class="built_in">log</span></span><br><span class="line">└── zookeeper-<span class="number">3</span></span><br><span class="line">│   └── data</span><br><span class="line">│   └── <span class="built_in">log</span></span><br></pre></td></tr></table></figure>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">ip-<span class="number">192</span>-<span class="number">168</span>-<span class="number">0</span>-<span class="number">101</span>:~$ tree /var/lib/zookeeper</span><br><span class="line"></span><br><span class="line">/var/lib/zookeeper</span><br><span class="line">├── zookeeper-<span class="number">4</span></span><br><span class="line">│   └── data</span><br><span class="line">│   └── <span class="built_in">log</span></span><br><span class="line">└── zookeeper-<span class="number">5</span></span><br><span class="line">│   └── data</span><br><span class="line">│   └── <span class="built_in">log</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="Step_2:_Creating_file_myid_(a_ZooKeeper_Server_ID)">Step 2: Creating file <code>myid</code> (a ZooKeeper Server ID)</h3><p>Basically this file <code>myid</code> reside in the <code>ZooKeeper</code> data directory.</p>
+<ul>
+<li><p>on host <em>192.168.0.100</em></p>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ip-<span class="number">192</span>-<span class="number">168</span>-<span class="number">0</span>-<span class="number">100</span>:~$ <span class="built_in">echo</span> <span class="number">1</span> &gt; /var/lib/zookeeper/zookeeper-<span class="number">1</span>/data/myid</span><br><span class="line">ip-<span class="number">192</span>-<span class="number">168</span>-<span class="number">0</span>-<span class="number">100</span>:~$ <span class="built_in">echo</span> <span class="number">2</span> &gt; /var/lib/zookeeper/zookeeper-<span class="number">2</span>/data/myid</span><br><span class="line">ip-<span class="number">192</span>-<span class="number">168</span>-<span class="number">0</span>-<span class="number">100</span>:~$ <span class="built_in">echo</span> <span class="number">3</span> &gt; /var/lib/zookeeper/zookeeper-<span class="number">3</span>/data/myid</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>on host <em>192.168.0.101</em></p>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ip-<span class="number">192</span>-<span class="number">168</span>-<span class="number">0</span>-<span class="number">101</span>:~$ <span class="built_in">echo</span> <span class="number">4</span> &gt; /var/lib/zookeeper/zookeeper-<span class="number">4</span>/data/myid</span><br><span class="line">ip-<span class="number">192</span>-<span class="number">168</span>-<span class="number">0</span>-<span class="number">101</span>:~$ <span class="built_in">echo</span> <span class="number">5</span> &gt; /var/lib/zookeeper/zookeeper-<span class="number">5</span>/data/myid</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="Step_3:_Downloading_Stable_ZooKeeper_Release_and_Copying_Files">Step 3: Downloading <a href="http://zookeeper.apache.org/releases.html" target="_blank" rel="external">Stable ZooKeeper Release</a> and Copying Files</h3><p>I use the version 3.4.6 of <code>ZooKeeper</code> as an example.</p>
+<ul>
+<li><p>on host <em>192.168.0.100</em></p>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">ip-<span class="number">192</span>-<span class="number">168</span>-<span class="number">0</span>-<span class="number">100</span>:~$ <span class="built_in">cd</span> /opt</span><br><span class="line">ip-<span class="number">192</span>-<span class="number">168</span>-<span class="number">0</span>-<span class="number">100</span>:/opt$ wget http://apache.arvixe.com/zookeeper/stable/zookeeper-<span class="number">3.4</span>.<span class="number">6</span>.tar.gz</span><br><span class="line">ip-<span class="number">192</span>-<span class="number">168</span>-<span class="number">0</span>-<span class="number">100</span>:/opt$ tar -zxf zookeeper-<span class="number">3.4</span>.<span class="number">6</span>.tar.gz</span><br><span class="line">ip-<span class="number">192</span>-<span class="number">168</span>-<span class="number">0</span>-<span class="number">100</span>:/opt$ cp ./zookeeper-<span class="number">3.4</span>.<span class="number">6</span>/* /var/lib/zookeeper/zookeeper-<span class="number">1</span>/</span><br><span class="line">ip-<span class="number">192</span>-<span class="number">168</span>-<span class="number">0</span>-<span class="number">100</span>:/opt$ cp ./zookeeper-<span class="number">3.4</span>.<span class="number">6</span>/* /var/lib/zookeeper/zookeeper-<span class="number">2</span>/</span><br><span class="line">ip-<span class="number">192</span>-<span class="number">168</span>-<span class="number">0</span>-<span class="number">100</span>:/opt$ cp ./zookeeper-<span class="number">3.4</span>.<span class="number">6</span>/* /var/lib/zookeeper/zookeeper-<span class="number">3</span>/</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>on host <em>192.168.0.101</em></p>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ip-<span class="number">192</span>-<span class="number">168</span>-<span class="number">0</span>-<span class="number">101</span>:~$ <span class="built_in">cd</span> /opt</span><br><span class="line">ip-<span class="number">192</span>-<span class="number">168</span>-<span class="number">0</span>-<span class="number">101</span>:/opt$ wget http://apache.arvixe.com/zookeeper/stable/zookeeper-<span class="number">3.4</span>.<span class="number">6</span>.tar.gz</span><br><span class="line">ip-<span class="number">192</span>-<span class="number">168</span>-<span class="number">0</span>-<span class="number">101</span>:/opt$ tar -zxf zookeeper-<span class="number">3.4</span>.<span class="number">6</span>.tar.gz</span><br><span class="line">ip-<span class="number">192</span>-<span class="number">168</span>-<span class="number">0</span>-<span class="number">101</span>:/opt$ cp ./zookeeper-<span class="number">3.4</span>.<span class="number">6</span>/* /var/lib/zookeeper/zookeeper-<span class="number">4</span>/</span><br><span class="line">ip-<span class="number">192</span>-<span class="number">168</span>-<span class="number">0</span>-<span class="number">101</span>:/opt$ cp ./zookeeper-<span class="number">3.4</span>.<span class="number">6</span>/* /var/lib/zookeeper/zookeeper-<span class="number">5</span>/</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="Step_4:_Configure_Every_ZooKeeper_Sever">Step 4: Configure Every ZooKeeper Sever</h3><p>The configuration file <code>zoo.cfg</code> locates at <code>/var/lib/zookeeper/[zookeeper-id]/conf/zoo.cfg</code>.</p>
+<p>Here I will show you how to configure <code>ZooKeeper</code> server1, which also works for other 4 servers.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ip-<span class="number">192</span>-<span class="number">168</span>-<span class="number">0</span>-<span class="number">100</span>:~$ cp /var/lib/zookeeper/zookeeper-<span class="number">1</span>/conf/zoo_sample.cfg /var/lib/zookeeper/zookeeper-<span class="number">1</span>/conf/zoo.cfg</span><br><span class="line">/Users/jeeva/zookeeper/zk-server-<span class="number">1</span>/conf/zoo.cfg</span><br><span class="line">ip-<span class="number">192</span>-<span class="number">168</span>-<span class="number">0</span>-<span class="number">100</span>:~$ vim /var/lib/zookeeper/zookeeper-<span class="number">1</span>/conf/zoo.cfg</span><br></pre></td></tr></table></figure>
+<p>You will see below configuration and take some modifications (including <em>clientPort</em>, <em>dataDir</em> and <em>dataLogDir</em>). For the last five servers’ setting, please refer to <a href="/2015/10/16/Tutorial-on-ZooKeeper-Part-2-Installation-and-Configuration/#Replicated_Mode">replicated mode in tutorial 2</a> for more explanation and the ports settings in <a href="/2015/10/17/Tutorial-on-ZooKeeper-Part-3-Setup-ZooKeeper-Cluster/#ZooKeeper_Deployment_Topology">#3 of ZooKeeper Deployment Topology</a>.</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"># The number of milliseconds of each tick</span><br><span class="line">tickTime=2000</span><br><span class="line"></span><br><span class="line"># The number of ticks that the initial synchronization phase can take</span><br><span class="line">initLimit=10</span><br><span class="line"></span><br><span class="line"># The number of ticks that can pass between</span><br><span class="line"># sending a request and getting an acknowledgement</span><br><span class="line">syncLimit=5</span><br><span class="line"></span><br><span class="line"># the directory where the snapshot is stored.</span><br><span class="line"># Choose appropriately for your environment</span><br><span class="line">dataDir=/var/lib/zookeeper/zookeeper-1/data/</span><br><span class="line"></span><br><span class="line"># the port at which the clients will connect</span><br><span class="line">clientPort=2181</span><br><span class="line"></span><br><span class="line"># the directory where transaction log is stored.</span><br><span class="line"># this parameter provides dedicated log device for ZooKeeper</span><br><span class="line">dataLogDir=/var/lib/zookeeper/zookeeper-1/log/</span><br><span class="line"></span><br><span class="line"># ZooKeeper server and its port no.</span><br><span class="line"># ZooKeeper ensemble should know about every other machine in the ensemble</span><br><span class="line"># specify server id by creating 'myid' file in the dataDir</span><br><span class="line"># use hostname instead of IP address for convenient maintenance</span><br><span class="line">server.1=192.168.0.100:2888:3888</span><br><span class="line">server.2=192.168.0.100:2889:3889</span><br><span class="line">server.3=192.168.0.100:2890:3890</span><br><span class="line">server.4=192.168.0.101:2888:3888</span><br><span class="line">server.5=192.168.0.101:2889:3889</span><br></pre></td></tr></table></figure>
+<p>Next please perform same steps with appropriate values (including <em>clientPort</em>, <em>dataDir</em>, <em>dataLogDir</em>) for the rest 4 ZooKeeper servers.</p>
+<h3 id="Step_5:_Configuration_ZooKeeper_Logger_for_deployment-">Step 5: Configuration ZooKeeper Logger for deployment.</h3><p>Following are the default values of <code>log4j.properties</code> and it holds dev nature in it; update it as per your environment and need.</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">zookeeper.root.logger=INFO, CONSOLE</span><br><span class="line">zookeeper.console.threshold=INFO</span><br><span class="line">zookeeper.log.dir=.</span><br><span class="line">zookeeper.log.file=zookeeper.log</span><br><span class="line">zookeeper.log.threshold=DEBUG</span><br><span class="line">zookeeper.tracelog.dir=.</span><br><span class="line">zookeeper.tracelog.file=zookeeper_trace.log</span><br></pre></td></tr></table></figure>
+<h3 id="Step_6:_Start_the_ZooKeeper_Cluster">Step 6: Start the ZooKeeper Cluster</h3><p>Once the <code>zoo.cfg</code> file created for all the 5 servers,  we can start the <code>ZooKeeper Cluster</code> by starting every <code>ZooKeeper</code> server.</p>
+<p>First let’s start the server1</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ip-<span class="number">192</span>-<span class="number">168</span>-<span class="number">0</span>-<span class="number">100</span>:/opt$ <span class="built_in">cd</span> /var/lib/zookeeper/zookeeper-<span class="number">1</span>/</span><br><span class="line">ip-<span class="number">192</span>-<span class="number">168</span>-<span class="number">0</span>-<span class="number">100</span>:zookeeper-<span class="number">1</span>$ ./bin/zkServer.sh start</span><br><span class="line">JMX enabled by default</span><br><span class="line">Using config: /var/lib/zookeeper/zookeeper-<span class="number">1</span>/conf/zoo.cfg</span><br><span class="line">Starting zookeeper ... STARTED</span><br></pre></td></tr></table></figure>
+<p>Now, go ahead and start the remaining 4 <code>ZooKeeper</code> servers. Tail the <code>zookeeper.out</code> file in the bin directory to see more information.</p>
+<p>After all these 5 servers start, we use <code>status</code> to see/check every ZooKeeper Server status:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">ip-<span class="number">192</span>-<span class="number">168</span>-<span class="number">0</span>-<span class="number">100</span>:zookeeper-<span class="number">1</span>$ ./bin/zkServer.sh status</span><br><span class="line">JMX enabled by default</span><br><span class="line">Using config: /Users/jeeva/zookeeper/zk-server-<span class="number">1</span>/conf/zoo.cfg</span><br><span class="line">Mode: follower</span><br><span class="line">ip-<span class="number">192</span>-<span class="number">168</span>-<span class="number">0</span>-<span class="number">100</span>:zookeeper-<span class="number">1</span>$ <span class="built_in">cd</span> ../zookeeper-<span class="number">2</span></span><br><span class="line">ip-<span class="number">192</span>-<span class="number">168</span>-<span class="number">0</span>-<span class="number">100</span>:zookeeper-<span class="number">2</span>$ ./bin/zkServer.sh status</span><br><span class="line">JMX enabled by default</span><br><span class="line">Using config: /Users/jeeva/zookeeper/zk-server-<span class="number">2</span>/conf/zoo.cfg</span><br><span class="line">Mode: follower</span><br><span class="line">ip-<span class="number">192</span>-<span class="number">168</span>-<span class="number">0</span>-<span class="number">100</span>:zookeeper-<span class="number">2</span>$ <span class="built_in">cd</span> ../zookeeper-<span class="number">3</span></span><br><span class="line">ip-<span class="number">192</span>-<span class="number">168</span>-<span class="number">0</span>-<span class="number">100</span>:zookeeper-<span class="number">3</span>$ ./bin/zkServer.sh status</span><br><span class="line">JMX enabled by default</span><br><span class="line">Using config: /Users/jeeva/zookeeper/zk-server-<span class="number">3</span>/conf/zoo.cfg</span><br><span class="line">Mode: leader</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">ip-<span class="number">192</span>-<span class="number">168</span>-<span class="number">0</span>-<span class="number">101</span>:zookeeper-<span class="number">4</span>$ ./bin/zkServer.sh status</span><br><span class="line">JMX enabled by default</span><br><span class="line">Using config: /Users/jeeva/zookeeper/zk-server-<span class="number">4</span>/conf/zoo.cfg</span><br><span class="line">Mode: follower</span><br><span class="line">ip-<span class="number">192</span>-<span class="number">168</span>-<span class="number">0</span>-<span class="number">101</span>:zookeeper-<span class="number">4</span>$ <span class="built_in">cd</span> ../zookeeper-<span class="number">5</span></span><br><span class="line">ip-<span class="number">192</span>-<span class="number">168</span>-<span class="number">0</span>-<span class="number">101</span>:zookeeper-<span class="number">5</span>$ ./bin/zkServer.sh status</span><br><span class="line">JMX enabled by default</span><br><span class="line">Using config: /Users/jeeva/zookeeper/zk-server-<span class="number">5</span>/conf/zoo.cfg</span><br><span class="line">Mode: follower</span><br></pre></td></tr></table></figure>
+<h2 id="Reference">Reference</h2><ul>
+<li><a href="http://zookeeper.apache.org/" target="_blank" rel="external">Apache ZooKeeper - Official Site</a></li>
+<li><a href="http://myjeeva.com/zookeeper-cluster-setup.html" target="_blank" rel="external">ZooKeeper Cluster (Multi-Server) Setup</a></li>
+</ul>
+
+      </div>
+      <footer class="article-footer">
+        <a data-url="http://dixudx.github.io/2015/10/17/Tutorial-on-ZooKeeper-Part-3-Setup-ZooKeeper-Cluster/" data-id="cify5jo6100009nygtwy4sh4m" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+        
+          <a href="http://dixudx.github.io/2015/10/17/Tutorial-on-ZooKeeper-Part-3-Setup-ZooKeeper-Cluster/#comments" class="article-comment-link"><i class="fa fa-comments"></i>Comments</a>
+        
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/High-Availability/">High Availability</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ZooKeeper/">ZooKeeper</a></li></ul>
+
+      </footer>
+    </div>
+  </article>
+  
+    <section id="comments">
+      <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+      </div>
+    </section>
+  
+  
+
+            </div>
+          </section>
+          <aside id="sidebar">
+  <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+  <div class="sidebar-top">
+    <p>follow:</p>
+    <ul class="social-links">
+      
+        <li><a class="social-tooltip" title="github" href="https://github.com/dixudx" target="_blank"><i class="icon fa fa-github"></i></a></li>
+      
+        <li><a class="social-tooltip" title="linkedin" href="https://www.linkedin.com/pub/di-xu/71/991/7a1" target="_blank"><i class="icon fa fa-linkedin"></i></a></li>
+      
+        <li><a class="social-tooltip" title="rss" href="http://dixu.me/atom.xml" target="_blank"><i class="icon fa fa-rss"></i></a></li>
+      
+    </ul>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2015/10/16/Tutorial-on-ZooKeeper-Part-2-Installation-and-Configuration/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">older</strong>
+      <p class="article-nav-title">Tutorial on ZooKeeper – Part 2: Installation and Configuration</p>
+      <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+    </a>
+  
+</nav>
+
+  
+  <div class="widgets-container">
+    
+      
+  <div class="widget-wrap">
+    <h3 class="widget-title">recents</h3>
+    <div class="widget">
+      <ul id="recent-post" class="">
+        
+          <li>
+            
+            <div class="item-thumbnail">
+              
+<a href="/2015/10/17/Tutorial-on-ZooKeeper-Part-3-Setup-ZooKeeper-Cluster/" class="thumbnail">
+  
+    <span style="background-image:url(/images/zookeeper-1-638.jpg
+)" alt="Tutorial on ZooKeeper – Part 3: Setup ZooKeeper Cluster" class="thumbnail-image"></span>
+  
+</a>
+
+            </div>
+            
+            <div class="item-inner">
+              <p class="item-category"><a class="article-category-link" href="/categories/Tutorial/">Tutorial</a></p>
+              <p class="item-title"><a href="/2015/10/17/Tutorial-on-ZooKeeper-Part-3-Setup-ZooKeeper-Cluster/" class="title">Tutorial on ZooKeeper – Part 3: Setup ZooKeeper Cluster</a></p>
+              <p class="item-date"><time datetime="2015-10-17T02:32:18.000Z" itemprop="datePublished">2015-10-17</time></p>
+            </div>
+          </li>
+        
+          <li>
+            
+            <div class="item-thumbnail">
+              
+<a href="/2015/10/16/Tutorial-on-ZooKeeper-Part-2-Installation-and-Configuration/" class="thumbnail">
+  
+    <span style="background-image:url(/images/zoo_keeper1.png
+)" alt="Tutorial on ZooKeeper – Part 2: Installation and Configuration" class="thumbnail-image"></span>
+  
+</a>
+
+            </div>
+            
+            <div class="item-inner">
+              <p class="item-category"><a class="article-category-link" href="/categories/Tutorial/">Tutorial</a></p>
+              <p class="item-title"><a href="/2015/10/16/Tutorial-on-ZooKeeper-Part-2-Installation-and-Configuration/" class="title">Tutorial on ZooKeeper – Part 2: Installation and Configuration</a></p>
+              <p class="item-date"><time datetime="2015-10-16T05:37:58.000Z" itemprop="datePublished">2015-10-16</time></p>
+            </div>
+          </li>
+        
+          <li>
+            
+            <div class="item-thumbnail">
+              
+<a href="/2015/10/14/Tutorial-on-ZooKeeper-Part-1-Concepts-and-Terminologies/" class="thumbnail">
+  
+    <span style="background-image:url(/images/bigdata-zookeeper.png
+)" alt="Tutorial on ZooKeeper – Part 1: Concepts and Terminologies" class="thumbnail-image"></span>
+  
+</a>
+
+            </div>
+            
+            <div class="item-inner">
+              <p class="item-category"><a class="article-category-link" href="/categories/Tutorial/">Tutorial</a></p>
+              <p class="item-title"><a href="/2015/10/14/Tutorial-on-ZooKeeper-Part-1-Concepts-and-Terminologies/" class="title">Tutorial on ZooKeeper – Part 1: Concepts and Terminologies</a></p>
+              <p class="item-date"><time datetime="2015-10-14T12:25:21.000Z" itemprop="datePublished">2015-10-14</time></p>
+            </div>
+          </li>
+        
+          <li>
+            
+            <div class="item-thumbnail">
+              
+<a href="/2015/09/28/Dynamically-Show-the-Overall-Progress-of-Running-Jenkins-Flows/" class="thumbnail">
+  
+    <span style="background-image:url(/images/jenkins_logo_title.jpg
+)" alt="Dynamically Show the Overall Progress of Running Jenkins Flows" class="thumbnail-image"></span>
+  
+</a>
+
+            </div>
+            
+            <div class="item-inner">
+              <p class="item-category"><a class="article-category-link" href="/categories/Projects/">Projects</a></p>
+              <p class="item-title"><a href="/2015/09/28/Dynamically-Show-the-Overall-Progress-of-Running-Jenkins-Flows/" class="title">Dynamically Show the Overall Progress of Running Jenkins Flows</a></p>
+              <p class="item-date"><time datetime="2015-09-28T07:52:24.000Z" itemprop="datePublished">2015-09-28</time></p>
+            </div>
+          </li>
+        
+          <li>
+            
+            <div class="item-thumbnail">
+              
+<a href="/2015/09/28/A-Python-based-Client-for-Rational-Team-Concert-RTC/" class="thumbnail">
+  
+    <span style="background-image:url(/images/IBM_Rational_Team_Concert.png
+)" alt="A Python-based Client for Rational Team Concert (RTC)" class="thumbnail-image"></span>
+  
+</a>
+
+            </div>
+            
+            <div class="item-inner">
+              <p class="item-category"><a class="article-category-link" href="/categories/Projects/">Projects</a></p>
+              <p class="item-title"><a href="/2015/09/28/A-Python-based-Client-for-Rational-Team-Concert-RTC/" class="title">A Python-based Client for Rational Team Concert (RTC)</a></p>
+              <p class="item-date"><time datetime="2015-09-28T06:50:51.000Z" itemprop="datePublished">2015-09-28</time></p>
+            </div>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget-wrap widget-list">
+    <h3 class="widget-title">categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Projects/">Projects</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Tutorial/">Tutorial</a><span class="category-list-count">3</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget-wrap widget-list">
+    <h3 class="widget-title">archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a><span class="archive-list-count">2</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget-wrap widget-list">
+    <h3 class="widget-title">tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Apache/">Apache</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DevOps/">DevOps</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/High-Availability/">High Availability</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Jenkins/">Jenkins</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/">Python</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RTC/">RTC</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ZeroMQ/">ZeroMQ</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ZooKeeper/">ZooKeeper</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pypi/">pypi</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rtcclient/">rtcclient</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget-wrap widget-float">
+    <h3 class="widget-title">tag cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Apache/" style="font-size: 10px;">Apache</a> <a href="/tags/DevOps/" style="font-size: 10px;">DevOps</a> <a href="/tags/High-Availability/" style="font-size: 10px;">High Availability</a> <a href="/tags/Jenkins/" style="font-size: 10px;">Jenkins</a> <a href="/tags/Python/" style="font-size: 10px;">Python</a> <a href="/tags/RTC/" style="font-size: 10px;">RTC</a> <a href="/tags/ZeroMQ/" style="font-size: 10px;">ZeroMQ</a> <a href="/tags/ZooKeeper/" style="font-size: 20px;">ZooKeeper</a> <a href="/tags/pypi/" style="font-size: 10px;">pypi</a> <a href="/tags/rtcclient/" style="font-size: 10px;">rtcclient</a>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget-wrap widget-list">
+    <h3 class="widget-title">links</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="http://hexo.io">Hexo</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+    
+  </div>
+</aside>
+        </div>
+      </div>
+    </div>
+    <footer id="footer">
+  
+  <div class="container">
+    <div class="container-inner">
+      <a id="back-to-top" href="javascript:;"><i class="icon fa fa-angle-up"></i></a>
+      <div class="credit">
+        <h1 class="logo-wrap">
+          <a href="/" class="logo"></a>
+        </h1>
+        <p>&copy; 2015 Di Xu</p>
+        <p>Powered by <a href="//hexo.io/" target="_blank">Hexo</a>. Theme by <a href="//github.com/ppoffice" target="_blank">PPOffice</a></p>
+      </div>
+    </div>
+  </div>
+</footer>
+    
+<script>
+  var disqus_shortname = 'dixume';
+  
+  var disqus_url = 'http://dixudx.github.io/2015/10/17/Tutorial-on-ZooKeeper-Part-3-Setup-ZooKeeper-Cluster/';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+
+  <script src="http://code.jquery.com/jquery-2.1.3.min.js"></script>
+
+
+
+  <script src="/fancybox/jquery.fancybox.pack.js" type="text/javascript"></script>
+
+
+
+  <script src="/scrollLoading/jquery.scrollLoading.js" type="text/javascript"></script>
+  <script src="/scrollLoading/main.js" type="text/javascript"></script>
+
+
+<script src="/js/html-patch.js" type="text/javascript"></script>
+<script src="/js/script.js" type="text/javascript"></script>
+
+  </div>
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+</body>
+</html>
