@@ -127,7 +127,7 @@
     <link href="http://dixudx.github.io/2015/10/16/Tutorial-on-ZooKeeper-Part-2-Installation-and-Configuration/"/>
     <id>http://dixudx.github.io/2015/10/16/Tutorial-on-ZooKeeper-Part-2-Installation-and-Configuration/</id>
     <published>2015-10-16T05:37:58.000Z</published>
-    <updated>2015-10-19T16:25:37.000Z</updated>
+    <updated>2015-10-19T16:50:54.000Z</updated>
     <content type="html"><![CDATA[<p>In <a href="/2015/10/14/Tutorial-on-ZooKeeper-Part-1-Concepts-and-Terminologies/">last tutorial</a>, some concepts and terminologies are introduced. To further investigate and use <code>ZooKeeper</code>, we move to the next step - install and configure <code>ZooKeeper</code>. </p>
 <p><img src="/images/zoo_keeper1.png" alt=""></p>
 <h2 id="Installation">Installation</h2><p><code>ZooKeeper</code> is very simple to install.</p>
