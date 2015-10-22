@@ -4,7 +4,7 @@
   <subtitle><![CDATA[To me, the past is black and white, but the future is always colorful.]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://dixudx.github.io/"/>
-  <updated>2015-10-19T16:36:20.000Z</updated>
+  <updated>2015-10-22T15:47:23.000Z</updated>
   <id>http://dixudx.github.io/</id>
   
   <author>
@@ -15,14 +15,58 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title><![CDATA[Tutorial on ZooKeeper – Part 4: Use Ansible to Setup ZooKeeper Servers]]></title>
+    <link href="http://dixudx.github.io/2015/10/22/Tutorial-on-ZooKeeper-Part-4-Use-Ansible-to-Setup-ZooKeeper-Servers/"/>
+    <id>http://dixudx.github.io/2015/10/22/Tutorial-on-ZooKeeper-Part-4-Use-Ansible-to-Setup-ZooKeeper-Servers/</id>
+    <published>2015-10-22T13:19:43.000Z</published>
+    <updated>2015-10-22T15:47:23.000Z</updated>
+    <content type="html"><![CDATA[<p>From the <a href="/2015/10/17/Tutorial-on-ZooKeeper-Part-3-Setup-ZooKeeper-Cluster/">last tutorial</a>, we know how to install and configure a <code>ZooKeeper cluster</code> starting from scratch.</p>
+<p><img src="/images/zookeeper_cartoon.jpg" alt=""></p>
+<p>In order to simplify the deployment, I’ve written a <a href="https://github.com/dixudx/ansible-zookeeper" target="_blank" rel="external">ansible-zookeeper role</a>, which is originally forked from <a href="https://github.com/AnsibleShipyard/ansible-zookeeper" target="_blank" rel="external">AnsibleShipyard</a> and modified to support both <strong>standalone mode</strong> and <strong>replicated mode</strong> (also known as <code>cluster</code>), to deploy <code>ZooKeeper</code> servers.</p>
+<blockquote>
+<p>Note: This role requires <code>Java</code> support. You can install manually or use role <a href="https://github.com/AnsibleShipyard/ansible-java" target="_blank" rel="external">ansible-java</a> as a dependency. This role assumes that all your to-be-deployed servers have been already installed these <a href="https://zookeeper.apache.org/doc/r3.4.6/zookeeperAdmin.html#sc_systemReq" target="_blank" rel="external">required softwares</a>. </p>
+</blockquote>
+<h2 id="Clone_the_Role">Clone the Role</h2><p>Before the deployment, you have to first clone the role to your ansible playbooks folder (just for better management), of course you can specify to other folders.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> /your/ansible/playbooks/</span><br><span class="line">$ git <span class="built_in">clone</span> https://github.com/dixudx/ansible-zookeeper.git</span><br></pre></td></tr></table></figure>
+<h2 id="Prepare_your_own_inventory">Prepare your own inventory</h2><p>Just as <a href="/2015/10/17/Tutorial-on-ZooKeeper-Part-3-Setup-ZooKeeper-Cluster/#ZooKeeper_Deployment_Topology">last tutorial said</a>, you have to be clear enough about your <code>ZooKeeper</code> servers. Touch your <a href="http://docs.ansible.com/ansible/intro_inventory.html" target="_blank" rel="external">inventory file</a> to store these servers. In order to differentiate these two modes for better demonstration, I create two sections, one is <strong>zookeeper_servers</strong> for <code>standalone mode</code>, the other is <strong>cluster_hosts</strong> for <code>replicated mode</code>. You can also give them other names. Take your choice.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ vim myinventory</span><br></pre></td></tr></table></figure>
+<h2 id="Start_the_Deployment">Start the Deployment</h2><p>The <strong>default</strong> mode of <a href="https://github.com/dixudx/ansible-zookeeper" target="_blank" rel="external">this role</a> is <code>standalone</code>, which means you can omit below parts in your yaml file.</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vars:&#10;  install_mode: &#34;standalone&#34;</span><br></pre></td></tr></table></figure>
+<h3 id="Standalone_Mode">Standalone Mode</h3><p>Once you have your own inventory file, you can create a blow playbook named <strong>zookeeper_standalone.yml</strong> and insert below contents.</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- hosts: zookeeper_servers&#10;  vars:&#10;    install_mode: &#34;standalone&#34;&#10;  sudo: yes&#10;&#10;  roles:&#10;    - &#123;role: ansible-zookeeper&#125;</span><br></pre></td></tr></table></figure>
+<p>If the servers have not been installed <code>Java</code>, you can append below part to the above playbook.</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dependencies:&#10;  - &#123; role: ansible-java, java_version: 7 &#125;</span><br></pre></td></tr></table></figure>
+<p>Now you can start deploying standalone <code>ZooKeeper</code> servers.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ansible-playbook -i myinventory zookeeper_standalone.yml</span><br></pre></td></tr></table></figure>
+<h3 id="Replicated_Mode">Replicated Mode</h3><p>Just as standalone mode, create a playbook named <strong>zookeeper_cluster.yml</strong> and insert below contents.</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- hosts: cluster_hosts&#10;  vars:&#10;    install_mode: &#34;cluster&#34;&#10;  sudo: yes&#10;&#10;  roles:&#10;    - &#123;role: ansible-zookeeper&#125;</span><br></pre></td></tr></table></figure>
+<p>Also you can add <a href="https://github.com/AnsibleShipyard/ansible-java" target="_blank" rel="external">ansible-java</a> as a dependency.</p>
+<p>Run below command to deploy <code>ZooKeeper</code> cluster.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ansible-playbook - i myinventory zookeeper_cluster.yml</span><br></pre></td></tr></table></figure>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>From the <a href="/2015/10/17/Tutorial-on-ZooKeeper-Part-3-Setup-ZooKeeper-Cluster/">last tutorial</a>, we know how to install and config]]>
+    </summary>
+    
+      <category term="Ansible" scheme="http://dixudx.github.io/tags/Ansible/"/>
+    
+      <category term="Role" scheme="http://dixudx.github.io/tags/Role/"/>
+    
+      <category term="ZooKeeper" scheme="http://dixudx.github.io/tags/ZooKeeper/"/>
+    
+      <category term="Tutorial" scheme="http://dixudx.github.io/categories/Tutorial/"/>
+    
+  </entry>
+  
+  <entry>
     <title><![CDATA[Tutorial on ZooKeeper – Part 3: Setup ZooKeeper Cluster]]></title>
     <link href="http://dixudx.github.io/2015/10/17/Tutorial-on-ZooKeeper-Part-3-Setup-ZooKeeper-Cluster/"/>
     <id>http://dixudx.github.io/2015/10/17/Tutorial-on-ZooKeeper-Part-3-Setup-ZooKeeper-Cluster/</id>
     <published>2015-10-17T02:32:18.000Z</published>
-    <updated>2015-10-19T16:36:20.000Z</updated>
+    <updated>2015-10-22T15:03:44.000Z</updated>
     <content type="html"><![CDATA[<p>In <a href="/2015/10/16/Tutorial-on-ZooKeeper-Part-2-Installation-and-Configuration/">last tutorial</a>, how to install and configure <code>ZooKeeper</code> in <strong>standalone mode</strong> and <strong>replicated mode</strong> is introduced. Now I will give you an explicit example on how to setup this <strong>replicated mode</strong> ( also known as <code>ZooKeeper Cluster</code> ) starting from scratch.</p>
 <p><img src="/images/zookeeper-1-638.jpg" alt=""></p>
-<h2 id="Pre-requisites">Pre-requisites</h2><p>Before the deployment, please see <a href="https://zookeeper.apache.org/doc/r3.4.6/zookeeperAdmin.html#sc_systemReq" target="_blank" rel="external">System Requirements</a> in the Admin guide to install some required software especially </p>
+<h2 id="Pre-requisites">Pre-requisites</h2><p>Before the deployment, please see <a href="https://zookeeper.apache.org/doc/r3.4.6/zookeeperAdmin.html#sc_systemReq" target="_blank" rel="external">System Requirements</a> in the Admin guide to install some required software especially <code>Java</code>.</p>
 <h2 id="ZooKeeper_Deployment_Topology">ZooKeeper Deployment Topology</h2><p>Few things we have to be clear enough before we start the deployment of <code>ZooKeeper</code>.</p>
 <ol>
 <li><p>The number of <code>ZooKeeper</code> servers that you want to form your <code>ZooKeeper Cluster</code>.</p>

@@ -3,17 +3,25 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Tag: ZeroMQ | Stephen&#39;s Blog</title>
+  <title>Tutorial on ZooKeeper – Part 4: Use Ansible to Setup ZooKeeper Servers | Stephen&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Stephen's Blog">
-<meta property="og:url" content="http://dixudx.github.io/tags/ZeroMQ/index.html">
+  <meta name="description" content="From the last tutorial, we know how to install and configure a ZooKeeper cluster starting from scratch.
+
+In order to simplify the deployment, I’ve written a ansible-zookeeper role, which is originally">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Tutorial on ZooKeeper – Part 4: Use Ansible to Setup ZooKeeper Servers">
+<meta property="og:url" content="http://dixudx.github.io/2015/10/22/Tutorial-on-ZooKeeper-Part-4-Use-Ansible-to-Setup-ZooKeeper-Servers/index.html">
 <meta property="og:site_name" content="Stephen's Blog">
-<meta property="og:description">
+<meta property="og:description" content="From the last tutorial, we know how to install and configure a ZooKeeper cluster starting from scratch.
+
+In order to simplify the deployment, I’ve written a ansible-zookeeper role, which is originally">
+<meta property="og:image" content="http://dixudx.github.io/images/zookeeper_cartoon.jpg">
+<meta property="og:updated_time" content="2015-10-22T15:47:23.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Stephen's Blog">
-<meta name="twitter:description">
+<meta name="twitter:title" content="Tutorial on ZooKeeper – Part 4: Use Ansible to Setup ZooKeeper Servers">
+<meta name="twitter:description" content="From the last tutorial, we know how to install and configure a ZooKeeper cluster starting from scratch.
+
+In order to simplify the deployment, I’ve written a ansible-zookeeper role, which is originally">
   
   
     <link rel="icon" href="/favicon.png">
@@ -87,61 +95,74 @@
           <section id="main">
             <div class="main-body-header">
 
-              <h1 class="header"><i class="icon fa fa-tag"></i>tag : <em>ZeroMQ</em></h1>
+              <h1 class="header"><a class="page-title-link" href="/categories/Tutorial/">Tutorial</a></h1>
             </div>
             <div class="main-body-content">
               
-  
-  
-    
-    
+  <article id="post-Tutorial-on-ZooKeeper-Part-4-Use-Ansible-to-Setup-ZooKeeper-Servers" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+      <!--  -->
       
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2015" class="archive-year"><i class="icon fa fa-calendar-o"></i>2015</a>
-        </div>
-        <div class="archives">
-    
-    
-    
-      <div class="article-row">
-    
-        
-  <article class="article article-summary">
-    <div class="article-summary-inner">
-      
-<a href="/2015/09/28/Dynamically-Show-the-Overall-Progress-of-Running-Jenkins-Flows/" class="thumbnail">
+        <header class="article-header">
+          
   
-    <span style="background-image:url(/images/jenkins_logo_title.jpg
-)" alt="Dynamically Show the Overall Progress of Running Jenkins Flows" class="thumbnail-image"></span>
+    <h1 class="article-title" itemprop="name">
+      Tutorial on ZooKeeper – Part 4: Use Ansible to Setup ZooKeeper Servers
+    </h1>
   
-</a>
 
-      <div class="article-meta">
-        <p class="category"><a class="article-category-link" href="/categories/Projects/">Projects</a></p>
-        <p class="date"><time datetime="2015-09-28T07:52:24.000Z" itemprop="datePublished">2015-09-28</time></p>
-      </div>
-      <h2 class="article-title">
-        <a href="/2015/09/28/Dynamically-Show-the-Overall-Progress-of-Running-Jenkins-Flows/" class="title">Dynamically Show the Overall Progress of Running Jenkins Flows</a>
-      </h2>
-      <p class="article-excerpt">
-        
-        Prelude
-Everyone knows Jenkins, right? And I think nobody don’t love Jenkins. Maybe it’s not the fastest or the fanciest, but it’s really easy to start to use, even for rookies, due to its short learn
+        </header>
+      
+      <p class="article-byline">
+        <a href="/2015/10/22/Tutorial-on-ZooKeeper-Part-4-Use-Ansible-to-Setup-ZooKeeper-Servers/" class="article-date">
+  <time datetime="2015-10-22T13:19:43.000Z" itemprop="datePublished">2015-10-22</time>
+</a>
       </p>
+      <div class="article-entry" itemprop="articleBody">
+        <p>From the <a href="/2015/10/17/Tutorial-on-ZooKeeper-Part-3-Setup-ZooKeeper-Cluster/">last tutorial</a>, we know how to install and configure a <code>ZooKeeper cluster</code> starting from scratch.</p>
+<p><img src="/images/zookeeper_cartoon.jpg" alt=""></p>
+<p>In order to simplify the deployment, I’ve written a <a href="https://github.com/dixudx/ansible-zookeeper" target="_blank" rel="external">ansible-zookeeper role</a>, which is originally forked from <a href="https://github.com/AnsibleShipyard/ansible-zookeeper" target="_blank" rel="external">AnsibleShipyard</a> and modified to support both <strong>standalone mode</strong> and <strong>replicated mode</strong> (also known as <code>cluster</code>), to deploy <code>ZooKeeper</code> servers.</p>
+<blockquote>
+<p>Note: This role requires <code>Java</code> support. You can install manually or use role <a href="https://github.com/AnsibleShipyard/ansible-java" target="_blank" rel="external">ansible-java</a> as a dependency. This role assumes that all your to-be-deployed servers have been already installed these <a href="https://zookeeper.apache.org/doc/r3.4.6/zookeeperAdmin.html#sc_systemReq" target="_blank" rel="external">required softwares</a>. </p>
+</blockquote>
+<h2 id="Clone_the_Role">Clone the Role</h2><p>Before the deployment, you have to first clone the role to your ansible playbooks folder (just for better management), of course you can specify to other folders.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> /your/ansible/playbooks/</span><br><span class="line">$ git <span class="built_in">clone</span> https://github.com/dixudx/ansible-zookeeper.git</span><br></pre></td></tr></table></figure>
+<h2 id="Prepare_your_own_inventory">Prepare your own inventory</h2><p>Just as <a href="/2015/10/17/Tutorial-on-ZooKeeper-Part-3-Setup-ZooKeeper-Cluster/#ZooKeeper_Deployment_Topology">last tutorial said</a>, you have to be clear enough about your <code>ZooKeeper</code> servers. Touch your <a href="http://docs.ansible.com/ansible/intro_inventory.html" target="_blank" rel="external">inventory file</a> to store these servers. In order to differentiate these two modes for better demonstration, I create two sections, one is <strong>zookeeper_servers</strong> for <code>standalone mode</code>, the other is <strong>cluster_hosts</strong> for <code>replicated mode</code>. You can also give them other names. Take your choice.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ vim myinventory</span><br></pre></td></tr></table></figure>
+<h2 id="Start_the_Deployment">Start the Deployment</h2><p>The <strong>default</strong> mode of <a href="https://github.com/dixudx/ansible-zookeeper" target="_blank" rel="external">this role</a> is <code>standalone</code>, which means you can omit below parts in your yaml file.</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vars:&#10;  install_mode: &#34;standalone&#34;</span><br></pre></td></tr></table></figure>
+<h3 id="Standalone_Mode">Standalone Mode</h3><p>Once you have your own inventory file, you can create a blow playbook named <strong>zookeeper_standalone.yml</strong> and insert below contents.</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- hosts: zookeeper_servers&#10;  vars:&#10;    install_mode: &#34;standalone&#34;&#10;  sudo: yes&#10;&#10;  roles:&#10;    - &#123;role: ansible-zookeeper&#125;</span><br></pre></td></tr></table></figure>
+<p>If the servers have not been installed <code>Java</code>, you can append below part to the above playbook.</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dependencies:&#10;  - &#123; role: ansible-java, java_version: 7 &#125;</span><br></pre></td></tr></table></figure>
+<p>Now you can start deploying standalone <code>ZooKeeper</code> servers.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ansible-playbook -i myinventory zookeeper_standalone.yml</span><br></pre></td></tr></table></figure>
+<h3 id="Replicated_Mode">Replicated Mode</h3><p>Just as standalone mode, create a playbook named <strong>zookeeper_cluster.yml</strong> and insert below contents.</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- hosts: cluster_hosts&#10;  vars:&#10;    install_mode: &#34;cluster&#34;&#10;  sudo: yes&#10;&#10;  roles:&#10;    - &#123;role: ansible-zookeeper&#125;</span><br></pre></td></tr></table></figure>
+<p>Also you can add <a href="https://github.com/AnsibleShipyard/ansible-java" target="_blank" rel="external">ansible-java</a> as a dependency.</p>
+<p>Run below command to deploy <code>ZooKeeper</code> cluster.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ansible-playbook - i myinventory zookeeper_cluster.yml</span><br></pre></td></tr></table></figure>
+
+      </div>
+      <footer class="article-footer">
+        <a data-url="http://dixudx.github.io/2015/10/22/Tutorial-on-ZooKeeper-Part-4-Use-Ansible-to-Setup-ZooKeeper-Servers/" data-id="cig2egphv0000axygnqn3j21q" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+        
+          <a href="http://dixudx.github.io/2015/10/22/Tutorial-on-ZooKeeper-Part-4-Use-Ansible-to-Setup-ZooKeeper-Servers/#comments" class="article-comment-link"><i class="fa fa-comments"></i>Comments</a>
+        
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Ansible/">Ansible</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Role/">Role</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ZooKeeper/">ZooKeeper</a></li></ul>
+
+      </footer>
     </div>
   </article>
-
-    
+  
+    <section id="comments">
+      <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
       </div>
-    
+    </section>
   
   
-    </div></section>
-  
-  
-
 
             </div>
           </section>
@@ -159,6 +180,19 @@ Everyone knows Jenkins, right? And I think nobody don’t love Jenkins. Maybe it
       
     </ul>
   </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2015/10/17/Tutorial-on-ZooKeeper-Part-3-Setup-ZooKeeper-Cluster/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">older</strong>
+      <p class="article-nav-title">Tutorial on ZooKeeper – Part 3: Setup ZooKeeper Cluster</p>
+      <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+    </a>
+  
+</nav>
+
   
   <div class="widgets-container">
     
@@ -353,11 +387,13 @@ Everyone knows Jenkins, right? And I think nobody don’t love Jenkins. Maybe it
 <script>
   var disqus_shortname = 'dixume';
   
+  var disqus_url = 'http://dixudx.github.io/2015/10/22/Tutorial-on-ZooKeeper-Part-4-Use-Ansible-to-Setup-ZooKeeper-Servers/';
+  
   (function(){
     var dsq = document.createElement('script');
     dsq.type = 'text/javascript';
     dsq.async = true;
-    dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
     (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
   })();
 </script>
@@ -380,5 +416,35 @@ Everyone knows Jenkins, right? And I think nobody don’t love Jenkins. Maybe it
 <script src="/js/script.js" type="text/javascript"></script>
 
   </div>
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
 </body>
 </html>
