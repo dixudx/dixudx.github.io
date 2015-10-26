@@ -3,17 +3,20 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Category: Projects | Stephen&#39;s Blog</title>
+  <title>How to Allow Remote Connections to Flask Web Service | Stephen&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Stephen's Blog">
-<meta property="og:url" content="http://dixudx.github.io/categories/Projects/index.html">
+  <meta name="description" content="Flask is a pretty good web framework for Python based on Werkzeug, Jinja 2 and good intentions. It is lightweight, which can help you easily and quickly set up a web application starting from scratch.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="How to Allow Remote Connections to Flask Web Service">
+<meta property="og:url" content="http://dixudx.github.io/2015/10/26/How_to_Allow_Remote_Connections_to_Flask_Web_Service/index.html">
 <meta property="og:site_name" content="Stephen's Blog">
-<meta property="og:description">
+<meta property="og:description" content="Flask is a pretty good web framework for Python based on Werkzeug, Jinja 2 and good intentions. It is lightweight, which can help you easily and quickly set up a web application starting from scratch.">
+<meta property="og:image" content="http://dixudx.github.io/images/flask.png">
+<meta property="og:image" content="http://dixudx.github.io/images/flask-app-unreachable.png">
+<meta property="og:updated_time" content="2015-10-26T12:40:47.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Stephen's Blog">
-<meta name="twitter:description">
+<meta name="twitter:title" content="How to Allow Remote Connections to Flask Web Service">
+<meta name="twitter:description" content="Flask is a pretty good web framework for Python based on Werkzeug, Jinja 2 and good intentions. It is lightweight, which can help you easily and quickly set up a web application starting from scratch.">
   
   
     <link rel="icon" href="/favicon.png">
@@ -87,93 +90,74 @@
           <section id="main">
             <div class="main-body-header">
 
-              <h1 class="header"><i class="icon fa fa-folder-open"></i>category : <em class="page-title-link">Projects</em></h1>
+              <h1 class="header"><a class="page-title-link" href="/categories/Technical/">Technical</a></h1>
             </div>
             <div class="main-body-content">
               
-  
-  
-    
-    
+  <article id="post-How_to_Allow_Remote_Connections_to_Flask_Web_Service" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+      <!--  -->
       
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2015" class="archive-year"><i class="icon fa fa-calendar-o"></i>2015</a>
-        </div>
-        <div class="archives">
-    
-    
-    
-      <div class="article-row">
-    
-        
-  <article class="article article-summary">
-    <div class="article-summary-inner">
-      
-<a href="/2015/09/28/Dynamically-Show-the-Overall-Progress-of-Running-Jenkins-Flows/" class="thumbnail">
+        <header class="article-header">
+          
   
-    <span style="background-image:url(/images/jenkins_logo_title.jpg
-)" alt="Dynamically Show the Overall Progress of Running Jenkins Flows" class="thumbnail-image"></span>
+    <h1 class="article-title" itemprop="name">
+      How to Allow Remote Connections to Flask Web Service
+    </h1>
   
-</a>
 
-      <div class="article-meta">
-        <p class="category"><a class="article-category-link" href="/categories/Projects/">Projects</a></p>
-        <p class="date"><time datetime="2015-09-28T07:52:24.000Z" itemprop="datePublished">2015-09-28</time></p>
-      </div>
-      <h2 class="article-title">
-        <a href="/2015/09/28/Dynamically-Show-the-Overall-Progress-of-Running-Jenkins-Flows/" class="title">Dynamically Show the Overall Progress of Running Jenkins Flows</a>
-      </h2>
-      <p class="article-excerpt">
-        
-        Prelude
-Everyone knows Jenkins, right? And I think nobody don’t love Jenkins. Maybe it’s not the fastest or the fanciest, but it’s really easy to start to use, even for rookies, due to its short learn
+        </header>
+      
+      <p class="article-byline">
+        <a href="/2015/10/26/How_to_Allow_Remote_Connections_to_Flask_Web_Service/" class="article-date">
+  <time datetime="2015-10-26T02:22:21.000Z" itemprop="datePublished">2015-10-26</time>
+</a>
       </p>
+      <div class="article-entry" itemprop="articleBody">
+        <p><img src="/images/flask.png" alt=""></p>
+<p><code>Flask</code> is a pretty good web framework for <code>Python</code> based on <a href="http://werkzeug.pocoo.org/" target="_blank" rel="external">Werkzeug</a>, <a href="http://jinja.pocoo.org/" target="_blank" rel="external">Jinja 2</a> and good intentions. It is <strong>lightweight</strong>, which can help you easily and quickly set up a web application starting from scratch.</p>
+<p>For how to build up a web service, please follow <a href="http://flask.pocoo.org/docs/0.10/quickstart/" target="_blank" rel="external">the quickstart guide</a>.</p>
+<h2 id="Problem">Problem</h2><p>After successfully finishing your web service, you can run it with your Python interpreter. Make sure to not call your application <code>flask.py</code> because this would conflict with Flask itself.</p>
+<p>For example, your service script is saved in file <code>hello.py</code>. Start the service with the following command.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ python hello.py</span><br><span class="line"> * Running on http://<span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">5000</span>/</span><br></pre></td></tr></table></figure>
+<p>Now head over to <a href="http://127.0.0.1:5000/" target="_blank" rel="external">http://127.0.0.1:5000/</a>, and you should see your service.</p>
+<p>You can accees the running service from the <code>localhost</code>. But you may cannot access this service from any other remote machines, such as <em>192.168.1.100</em>.</p>
+<p><img src="/images/flask-app-unreachable.png" alt=""></p>
+<h2 id="Solution">Solution</h2><p>There may be serveral reasons that cause this kind of error.</p>
+<p>Please make sure that your HTTP service is listenning on <em>192.168.1.100:5000</em> or everywhere ( <em>0.0.0.0:5000</em> ) by checking the output of</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ netstat -tupln | grep <span class="string">':5000'</span></span><br><span class="line">tcp        <span class="number">0</span>      <span class="number">0</span> <span class="number">192.168</span>.<span class="number">1.100</span>:<span class="number">5000</span>          <span class="number">0.0</span>.<span class="number">0.0</span>:*               LISTEN      <span class="number">5423</span>/python</span><br></pre></td></tr></table></figure>
+<h3 id="If_not,_please_bind_the_host_to_an_address_other_than_localhost-">If not, please bind the host to an address other than <code>localhost</code>.</h3><p>Just as the doc said, </p>
+<p>If you run the server you will notice that the server is only accessible from your own computer, not from any other in the network. This is the default because in <a href="http://flask.pocoo.org/docs/0.10/quickstart/#debug-mode" target="_blank" rel="external">debugging mode</a> a user of the application can execute arbitrary Python code on your computer.</p>
+<p>If you have debug <strong>disabled</strong> or trust the users on your network, you can make the server publicly available simply by changing the call of the <code>run()</code> method to look like this:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># runs on its own IP address</span></span><br><span class="line">app.run(host=<span class="string">'192.168.1.100'</span>)</span><br></pre></td></tr></table></figure>
+<p>or</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># This tells your operating system to listen on all public IPs.</span></span><br><span class="line">app.run(host=<span class="string">'0.0.0.0'</span>)</span><br></pre></td></tr></table></figure>
+<p>Remember to <strong>restart</strong> the service manually after each change to your code.</p>
+<h3 id="If_it_is,_allow_the_traffic_using_iptables:">If it is, allow the traffic using <code>iptables</code>:</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ iptables -I INPUT -p tcp --dport <span class="number">5000</span> -j ACCEPT</span><br></pre></td></tr></table></figure>
+<h2 id="Reference">Reference</h2><ul>
+<li><a href="http://flask.pocoo.org/docs" target="_blank" rel="external">Flask Official Documentation</a></li>
+</ul>
+
+      </div>
+      <footer class="article-footer">
+        <a data-url="http://dixudx.github.io/2015/10/26/How_to_Allow_Remote_Connections_to_Flask_Web_Service/" data-id="cig7xgy44000mk0ygduucnjb6" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+        
+          <a href="http://dixudx.github.io/2015/10/26/How_to_Allow_Remote_Connections_to_Flask_Web_Service/#comments" class="article-comment-link"><i class="fa fa-comments"></i>Comments</a>
+        
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Flask/">Flask</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li></ul>
+
+      </footer>
     </div>
   </article>
-
-    
   
-    
-    
-    
-    
-        
-  <article class="article article-summary">
-    <div class="article-summary-inner">
-      
-<a href="/2015/09/28/A-Python-based-Client-for-Rational-Team-Concert-RTC/" class="thumbnail">
-  
-    <span style="background-image:url(/images/IBM_Rational_Team_Concert.png
-)" alt="A Python-based Client for Rational Team Concert (RTC)" class="thumbnail-image"></span>
-  
-</a>
-
-      <div class="article-meta">
-        <p class="category"><a class="article-category-link" href="/categories/Projects/">Projects</a></p>
-        <p class="date"><time datetime="2015-09-28T06:50:51.000Z" itemprop="datePublished">2015-09-28</time></p>
+    <section id="comments">
+      <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
       </div>
-      <h2 class="article-title">
-        <a href="/2015/09/28/A-Python-based-Client-for-Rational-Team-Concert-RTC/" class="title">A Python-based Client for Rational Team Concert (RTC)</a>
-      </h2>
-      <p class="article-excerpt">
-        
-        OvertureIBM® Rational Team Concert™, is built on the Jazz platform, allowing application development teams to use one tool to plan across teams, code, run standups, plan sprints, and track work. For m
-      </p>
-    </div>
-  </article>
-
-    
-      </div>
-    
+    </section>
   
   
-    </div></section>
-  
-  
-
-
 
             </div>
           </section>
@@ -191,6 +175,19 @@ Everyone knows Jenkins, right? And I think nobody don’t love Jenkins. Maybe it
       
     </ul>
   </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2015/10/22/Tutorial-on-ZooKeeper-Part-4-Use-Ansible-to-Setup-ZooKeeper-Servers/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">older</strong>
+      <p class="article-nav-title">Tutorial on ZooKeeper – Part 4: Use Ansible to Setup ZooKeeper Servers</p>
+      <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+    </a>
+  
+</nav>
+
   
   <div class="widgets-container">
     
@@ -385,11 +382,13 @@ Everyone knows Jenkins, right? And I think nobody don’t love Jenkins. Maybe it
 <script>
   var disqus_shortname = 'dixume';
   
+  var disqus_url = 'http://dixudx.github.io/2015/10/26/How_to_Allow_Remote_Connections_to_Flask_Web_Service/';
+  
   (function(){
     var dsq = document.createElement('script');
     dsq.type = 'text/javascript';
     dsq.async = true;
-    dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
     (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
   })();
 </script>
