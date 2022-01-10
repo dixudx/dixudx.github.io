@@ -3,7 +3,7 @@
 
 <!--more-->
 
-## About This Talk
+## 演讲简介
 
 Sidecar containers are well accepted and widely used nowadays. Sidecars are coupled with normal containers by sharing the same lifecycle and provide accessory features. This is a good pattern to enable applications to be composed of heterogeneous components and technologies by reducing coupling.
 

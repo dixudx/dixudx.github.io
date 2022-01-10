@@ -3,7 +3,7 @@
 
 <!--more-->
 
-## About This Talk
+## 演讲简介
 
 For a Kubernetes cluster, nodes are crucial to make pods running properly. So it is indispensable to monitor nodes status and detect node problems. Node problem detector (NPD), an open source project in Kubernetes community, is a good answer to address this issue. Nowadays NPD has already been well accepted and widely used in production environments.
 
