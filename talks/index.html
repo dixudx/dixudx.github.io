@@ -4,7 +4,7 @@
 <meta name=viewport content="width=device-width,initial-scale=1">
 <meta name=robots content="noodp">
 <title class=pjax-title>All Talks - Di Xu's Blog</title><meta name=Description content="Open Source, Cloud Native, Infrastructure"><meta property="og:title" content="All Talks">
-<meta property="og:description" content="Introduction to Clusternet  Jul 23, 2021 Read more...     Help! Please Rescue Not-ready Nodes Immediately  Aug 20, KubeCon Euro 2020 Read more...     Release the Kraken: Bring Sidecar Containers to Next Level  Nov 21, KubeCon NA 2019 Read more...     Intro: SIG Cluster Lifecycle  Jun 25, KubeCon China 2019 Read more...     Deep Dive: SIG Cluster Lifecycle  Nov 15, KubeCon China 2018 Read more.">
+<meta property="og:description" content="Prospect of Cloud Native and Next-gen Cloud Native Platform  Dec 19th, 2021 | TVP Closed Meeting | in Chinese (Mandarin) Read more...     Multi-Cluster Management & Application Coordination  Nov 19th, 2021 | GOPS Shanghai | in Chinese (Mandarin) Read more...     Challenges and Opportunities of Multi-Cloud  Oct 31th, 2021 | COSCon | in Chinese (Mandarin) Read more...     Introduction to Clusternet  Jul 23, 2021 Read more.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://dixudx.github.io/talks/"><meta property="og:image" content="https://dixudx.github.io/images/avatar.png"><meta property="article:section" content>
 <meta property="article:published_time" content="2022-01-06T20:08:29+08:00">
@@ -12,14 +12,14 @@
 <meta name=twitter:card content="summary_large_image">
 <meta name=twitter:image content="https://dixudx.github.io/images/avatar.png">
 <meta name=twitter:title content="All Talks">
-<meta name=twitter:description content="Introduction to Clusternet  Jul 23, 2021 Read more...     Help! Please Rescue Not-ready Nodes Immediately  Aug 20, KubeCon Euro 2020 Read more...     Release the Kraken: Bring Sidecar Containers to Next Level  Nov 21, KubeCon NA 2019 Read more...     Intro: SIG Cluster Lifecycle  Jun 25, KubeCon China 2019 Read more...     Deep Dive: SIG Cluster Lifecycle  Nov 15, KubeCon China 2018 Read more.">
+<meta name=twitter:description content="Prospect of Cloud Native and Next-gen Cloud Native Platform  Dec 19th, 2021 | TVP Closed Meeting | in Chinese (Mandarin) Read more...     Multi-Cluster Management & Application Coordination  Nov 19th, 2021 | GOPS Shanghai | in Chinese (Mandarin) Read more...     Challenges and Opportunities of Multi-Cloud  Oct 31th, 2021 | COSCon | in Chinese (Mandarin) Read more...     Introduction to Clusternet  Jul 23, 2021 Read more.">
 <meta name=application-name content="Di Xu's Blog">
 <meta name=apple-mobile-web-app-title content="Di Xu's Blog">
 <meta name=theme-color content="#f8f8f8"><meta name=msapplication-TileColor content="#da532c"><link rel="shortcut icon" type=image/x-icon href=/favicon.ico>
 <link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png>
 <link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><link rel=manifest href=/site.webmanifest><link rel=canonical href=https://dixudx.github.io/talks/><link rel=prev href=https://dixudx.github.io/about/><link rel=stylesheet href=/lib/normalize/normalize.min.css><link rel=stylesheet href=/css/style.min.css><link rel=preload as=style onload="this.onload=null,this.rel='stylesheet'" href=/lib/fontawesome-free/all.min.css>
 <noscript><link rel=stylesheet href=/lib/fontawesome-free/all.min.css></noscript><link rel=preload as=style onload="this.onload=null,this.rel='stylesheet'" href=/lib/animate/animate.min.css>
-<noscript><link rel=stylesheet href=/lib/animate/animate.min.css></noscript><meta name=google-site-verification content="MQ8DNu27ayX6B_4ObiEDK09vGr1fdy7kOAnbd09hJk4"><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"All Talks","inLanguage":"en","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/dixudx.github.io\/talks\/"},"genre":"page","wordcount":71,"url":"https:\/\/dixudx.github.io\/talks\/","datePublished":"2022-01-06T20:08:29+08:00","dateModified":"2022-01-06T20:08:29+08:00","license":"This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher":{"@type":"Organization","name":"Di Xu","logo":"https:\/\/dixudx.github.io\/images\/avatar.png"},"author":{"@type":"Person","name":"Di Xu"},"description":""}</script></head>
+<noscript><link rel=stylesheet href=/lib/animate/animate.min.css></noscript><meta name=google-site-verification content="MQ8DNu27ayX6B_4ObiEDK09vGr1fdy7kOAnbd09hJk4"><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"All Talks","inLanguage":"en","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/dixudx.github.io\/talks\/"},"genre":"page","wordcount":126,"url":"https:\/\/dixudx.github.io\/talks\/","datePublished":"2022-01-06T20:08:29+08:00","dateModified":"2022-01-06T20:08:29+08:00","license":"This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher":{"@type":"Organization","name":"Di Xu","logo":"https:\/\/dixudx.github.io\/images\/avatar.png"},"author":{"@type":"Person","name":"Di Xu"},"description":""}</script></head>
 <body header-desktop=fixed header-mobile=auto><script type=text/javascript>function setTheme(a){document.body.setAttribute('theme',a)}function saveTheme(a){window.localStorage&&localStorage.setItem('theme',a)}function getMeta(b){const a=document.getElementsByTagName('meta');for(let c=0;c<a.length;c++)if(a[c].getAttribute('name')===b)return a[c];return''}if(window.localStorage&&localStorage.getItem('theme')){let a=localStorage.getItem('theme');a==='light'||a==='dark'||a==='black'?setTheme(a):window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?setTheme('dark'):setTheme('light')}else'auto'==='light'||'auto'==='dark'||'auto'==='black'?(setTheme('auto'),saveTheme('auto')):(saveTheme('auto'),window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?setTheme('dark'):setTheme('light'));let metaColors={light:'#f8f8f8',dark:'#252627',black:'#000000'};getMeta('theme-color').content=metaColors[document.body.getAttribute('theme')]</script>
 <div id=back-to-top></div>
 <div id=mask></div><div class=wrapper><header class=desktop id=header-desktop>
@@ -89,6 +89,48 @@ Cancel
 </div>
 <main class=main>
 <div class=container><div class="page single special"><h1 class="single-title animate__animated animate__pulse animate__faster">All Talks</h1><div class=content id=content>
+<div class="showcase-box column-">
+<div class=showcase-image>
+<a href=/zh-cn/tvp-2021-open-source><img class=lazyload data-src=/images/tvp-2021.jpeg data-srcset="/images/tvp-2021.jpeg, /images/tvp-2021.jpeg 1.5x, /images/tvp-2021.jpeg 2x" data-sizes=auto alt=/images/tvp-2021.jpeg title="Prospect of Cloud Native and Next-gen Cloud Native Platform" height=200 width=400></a>
+</div>
+<h1 class=showcase-title>
+<a href=/zh-cn/tvp-2021-open-source>Prospect of Cloud Native and Next-gen Cloud Native Platform</a>
+</h1>
+<p class=showcase-summary>
+Dec 19th, 2021 | TVP Closed Meeting | in Chinese (Mandarin)
+</p>
+<a class=showcase-link href=/zh-cn/tvp-2021-open-source>
+Read more...
+</a>
+</div>
+<div class="showcase-box column-">
+<div class=showcase-image>
+<a href=/zh-cn/gops-2021-shanghai-clusternet><img class=lazyload data-src=https://img.bagevent.com/resource/20211115/1049502074988.jpg data-srcset="https://img.bagevent.com/resource/20211115/1049502074988.jpg, https://img.bagevent.com/resource/20211115/1049502074988.jpg 1.5x, https://img.bagevent.com/resource/20211115/1049502074988.jpg 2x" data-sizes=auto alt=https://img.bagevent.com/resource/20211115/1049502074988.jpg title="Multi-Cluster Management & Application Coordination" height=200 width=400></a>
+</div>
+<h1 class=showcase-title>
+<a href=/zh-cn/gops-2021-shanghai-clusternet>Multi-Cluster Management & Application Coordination</a>
+</h1>
+<p class=showcase-summary>
+Nov 19th, 2021 | GOPS Shanghai | in Chinese (Mandarin)
+</p>
+<a class=showcase-link href=/zh-cn/gops-2021-shanghai-clusternet>
+Read more...
+</a>
+</div>
+<div class="showcase-box column-">
+<div class=showcase-image>
+<a href=/zh-cn/cos-con-2021><img class=lazyload data-src=https://www.bagevent.com/resource/20210726/1548406511670936.JPG data-srcset="https://www.bagevent.com/resource/20210726/1548406511670936.JPG, https://www.bagevent.com/resource/20210726/1548406511670936.JPG 1.5x, https://www.bagevent.com/resource/20210726/1548406511670936.JPG 2x" data-sizes=auto alt=https://www.bagevent.com/resource/20210726/1548406511670936.JPG title="Challenges and Opportunities of Multi-Cloud" height=200 width=400></a>
+</div>
+<h1 class=showcase-title>
+<a href=/zh-cn/cos-con-2021>Challenges and Opportunities of Multi-Cloud</a>
+</h1>
+<p class=showcase-summary>
+Oct 31th, 2021 | COSCon | in Chinese (Mandarin)
+</p>
+<a class=showcase-link href=/zh-cn/cos-con-2021>
+Read more...
+</a>
+</div>
 <div class="showcase-box column-">
 <div class=showcase-image>
 <a href=/ocm-community-mtg-clusternet><img class=lazyload data-src=https://raw.githubusercontent.com/cncf/artwork/master/projects/open-cluster-management/stacked/color/ocm-stacked-color.png data-srcset="https://raw.githubusercontent.com/cncf/artwork/master/projects/open-cluster-management/stacked/color/ocm-stacked-color.png, https://raw.githubusercontent.com/cncf/artwork/master/projects/open-cluster-management/stacked/color/ocm-stacked-color.png 1.5x, https://raw.githubusercontent.com/cncf/artwork/master/projects/open-cluster-management/stacked/color/ocm-stacked-color.png 2x" data-sizes=auto alt=https://raw.githubusercontent.com/cncf/artwork/master/projects/open-cluster-management/stacked/color/ocm-stacked-color.png title="Introduction to Clusternet" height=200 width=400></a>

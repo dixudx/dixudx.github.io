@@ -5,6 +5,8 @@
 
 {{< showcase title="新一代开源多集群管理与应用治理项目 – Clusternet" summary="2021年11月19日，GOPS 上海站" image="https://img.bagevent.com/resource/20211115/1049502074988.jpg" link="/zh-cn/gops-2021-shanghai-clusternet" >}}
 
+{{< showcase title="多云的挑战与机遇：腾讯的开源应对之道" summary="2021年10月31日，第六届中国开源年会" image="https://www.bagevent.com/resource/20210726/1548406511670936.JPG" link="/zh-cn/cos-con-2021" >}}
+
 {{< showcase title="Introduction to Clusternet" summary="2021年7月23日" image="https://raw.githubusercontent.com/cncf/artwork/master/projects/open-cluster-management/stacked/color/ocm-stacked-color.png" link="/ocm-community-mtg-clusternet" >}}
 
 {{< showcase title="Help! Please Rescue Not-ready Nodes Immediately" summary="2020年8月20日，KubeCon 欧洲峰会" image="https://www.cncf.io/wp-content/uploads/2020/08/kubecon-virtual-2020.jpg" link="/zh-cn/kubecon-euro-2020-rescue-nodes" >}}

@@ -1,6 +1,12 @@
 # All Talks
 
 
+{{< showcase title="Prospect of Cloud Native and Next-gen Cloud Native Platform" summary="Dec 19th, 2021 | TVP Closed Meeting | in Chinese (Mandarin)" image="/images/tvp-2021.jpeg" link="/zh-cn/tvp-2021-open-source" >}}
+
+{{< showcase title="Multi-Cluster Management & Application Coordination" summary="Nov 19th, 2021 | GOPS Shanghai | in Chinese (Mandarin)" image="https://img.bagevent.com/resource/20211115/1049502074988.jpg" link="/zh-cn/gops-2021-shanghai-clusternet" >}}
+
+{{< showcase title="Challenges and Opportunities of Multi-Cloud" summary="Oct 31th, 2021 | COSCon | in Chinese (Mandarin)" image="https://www.bagevent.com/resource/20210726/1548406511670936.JPG" link="/zh-cn/cos-con-2021" >}}
+
 {{< showcase title="Introduction to Clusternet" summary="Jul 23, 2021" image="https://raw.githubusercontent.com/cncf/artwork/master/projects/open-cluster-management/stacked/color/ocm-stacked-color.png" link="/ocm-community-mtg-clusternet" >}}
 
 {{< showcase title="Help! Please Rescue Not-ready Nodes Immediately" summary="Aug 20, KubeCon Euro 2020" image="https://www.cncf.io/wp-content/uploads/2020/08/kubecon-virtual-2020.jpg" link="/kubecon-euro-2020-rescue-nodes" >}}
