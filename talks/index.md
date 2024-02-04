@@ -11,7 +11,7 @@
 
 {{< showcase title="Help! Please Rescue Not-ready Nodes Immediately" summary="Aug 20, KubeCon Euro 2020" image="https://www.cncf.io/wp-content/uploads/2020/08/kubecon-virtual-2020.jpg" link="/kubecon-euro-2020-rescue-nodes" >}}
 
-{{< showcase title="Release the Kraken: Bring Sidecar Containers to Next Level" summary="Nov 21, KubeCon NA 2019" image="https://i1.wp.com/www.docker.com/blog/wp-content/uploads/2019/11/KubeCon_NA_2019_Banners_Social-linkedin.jpg" link="/kubecon-na-2019-sidecar" >}}
+{{< showcase title="Release the Kraken: Bring Sidecar Containers to Next Level" summary="Nov 21, KubeCon NA 2019" image="https://events19.linuxfoundation.org/wp-content/uploads/2018/08/KubeCon_NA_2019_bg-01.svg" link="/kubecon-na-2019-sidecar" >}}
 
 {{< showcase title="Intro: SIG Cluster Lifecycle" summary="Jun 25, KubeCon China 2019" image="https://www.linux.com/wp-content/uploads/2019/06/kubecon_china_2019-MPH81x.jpeg" link="/kubecon-china-2019-intro-sig-cluster-lifecycle" >}}
 
